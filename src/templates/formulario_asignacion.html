@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <form>
+                    <div class="form-group col-md-6">
+                        <label for="usuarioadvertmind">Usuario Advertmind</label>
+                        <input type="text" class="form-control" id="usuarioadvertmind" placeholder="Usuario Advertmind">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="correoElectronico">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correoElectronico" placeholder="name@example.com" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="division">División</label>
+                            <input type="text" class="form-control" id="divisionUsuario" placeholder="División" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="codigo">Código</label>
+                        <input type="number" class="form-control" id="codigo" placeholder="Código">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="categoriaActivo">Categoría Activo</label>
+                            <input type="text" class="form-control" id="categoriaActivo" placeholder="Categoría" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="tipoActivo">Tipo Activo</label>
+                            <input type="text" class="form-control" id="tipoActivo" placeholder="Tipo Activo" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="caracteristicas">Características</label>
+                            <input type="text" class="form-control text-uppercase" id="caracteristicas" placeholder="Características" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="divisionActivo">División</label>
+                            <input type="text" class="form-control" id="divisionActivo" placeholder="División" disabled>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
+    <script>
+        document.getElementById('codigo').addEventListener('input', function() {
+            var codigo = this.value;
+            var isSixDigits = codigo.length === 4;
+            document.getElementById('divisionUsuario').disabled = !isSixDigits;
+            document.getElementById('correoElectronico').disabled = !isSixDigits;
+            document.getElementById('categoriaActivo').disabled = !isSixDigits;
+            document.getElementById('tipoActivo').disabled = !isSixDigits;
+            document.getElementById('caracteristicas').disabled = !isSixDigits;
+            document.getElementById('divisionActivo').disabled = !isSixDigits;
+            document.querySelector('button[type="submit"]').disabled = !isSixDigits;
+        });
+    </script>
+</body>
+</html>
+{% endblock contenido %}

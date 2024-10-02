@@ -32,3 +32,16 @@ def modificar_usuario():
 @app.route('/ver_usuario')
 def ver_usuario():
     return render_template('tabla_usuarios.html')
+
+@app.route('/crear_asignacion')
+def crear_asignacion():
+    return render_template('formulario_asignacion.html')
+
+class Activos:
+    codigo = '602513'
+    categoria = 'Equipo de Computo'
+    tipo = 'Portatil'
+    descripcion = 'Portatil HP 256 SSD, 16GB DDR4'
+
+    def crear_activo(codigo, categoria, tipo, descripcion):
+        return 'Activo creado correctamente'
