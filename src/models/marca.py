@@ -1,7 +1,11 @@
-from sqlalchemy import Column, Integer, String, Float, ForeingKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from src.models import session, Base
 
-class Marca():
-    _tablename_ = 'marca'
+class Marca(Base):
+    __tablename__ = 'marca'
 
     idMarca = Column(Integer, primary_key=True)
-    nombreMarca = Column(Srring(20), nullable=True)
+    marca = Column(String(20), nullable=True)
+
+    def __init__(self, marca):
+        self.marca = marca
