@@ -15,42 +15,32 @@
             <th scope="col">Marca</th>
             <th scope="col">Modelo</th>
             <th scope="col">Serial</th>
+            <th scope="col">Largo</th>
+            <th scope="col">Ancho</th>
+            <th scope="col">Alto</th>
+            <th scope="col">Diametro</th>
+            <th scope="col">Ubicación</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>603286</td>
-            <td>EQUIPO DE COMPUTO</td>
-            <td>PORTATIL</td>
-            <td>RESOURCES</td>
-            <td>14"/16GB DDR4/256GB SSD</td>
-            <td>HP</td>
-            <td>EB 840G</td>
-            <td>TDWERD904</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>608080</td>
-            <td>EQUIPO DE COMPUTO</td>
-            <td>MONITOR</td>
-            <td>RESOURCES</td>
-            <td>19" FLAT LED</td>
-            <td>SAMSUNG</td>
-            <td>OLED</td>
-            <td>CDG16373T</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>601225</td>
-            <td>MUEBLES</td>
-            <td>SILLA</td>
-            <td>STARCOM</td>
-            <td>GIRATORIA, BASCULANTE, NIVEL DE ALTURA, PRANA NEGRO, BASE PLASTICA</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-          </tr>
+          {% for activo in activos %}
+            <tr>  
+              <th scope="row">{{activo.idActivo}}</th>
+              <td>{{activo.codigo}}</td>
+              <td>{{activo.tipo}}</td>
+              <td>{{activo.categoria}}</td>
+              <td>{{activo.caracteristicas}}</td>
+              <td>{{activo.marca}}</td>
+              <td>{{activo.modelo}}</td>
+              <td>{{activo.serial}}</td>
+              <td>{{activo.largo}}</td>
+              <td>{{activo.ancho}}</td>
+              <td>{{activo.alto}}</td>
+              <td>{{activo.diametro}}</td>
+              <td>{{activo.division}}</td>
+              <td>{{activo.ubicacion}}</td>
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
   </body>

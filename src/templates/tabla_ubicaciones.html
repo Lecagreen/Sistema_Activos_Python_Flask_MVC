@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ubicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ubicacion in ubicaciones %}
+            <tr>  
+              <th scope="row">{{ubicacion.idUbicacion}}</th>
+              <td>{{ubicacion.ubicacion}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}

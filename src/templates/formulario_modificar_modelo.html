@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form>
+                    <div class="form-group col-md-6" style="margin-bottom: 20px;">
+                        <label for="modelo">Modelo</label>
+                        <select class="form-control" id="modelo">
+                            <option value="MODELO1">MODELO1</option>
+                            <option value="MODELO2">MODELO2</option>
+                            <option value="MODELO3">MODELO3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6" style="margin-bottom: 30px;">
+                        <label for="tipo">Tipo</label>
+                        <input type="text" class="form-control" id="tipo" name="tipo" disabled>
+                    </div>
+                    <div class="text-center">
+                        <button type="guardar" class="btn btn-dark">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
+
+{% endblock contenido %}

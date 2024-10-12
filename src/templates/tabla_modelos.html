@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Marca</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for modelo in modelos %}
+            <tr>  
+              <th scope="row">{{modelo.idModelos}}</th>
+              <td>{{modelo.modelo}}</td>
+              <td>{{modelo.marca}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}

@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Division</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for division in divisiones %}
+            <tr>  
+              <th scope="row">{{division.idDivision}}</th>
+              <td>{{division.division}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}
