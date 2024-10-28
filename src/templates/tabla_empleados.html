@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Usuario Advertmind</th>
+            <th scope="col">División</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Correo Electronico</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for empleado in empleados %}
+          <tr>  
+            <th scope="row">{{empleado.idEmpleado}}</th>
+            <td>{{empleado.usuarioAdv}}</td>
+            <td>{{empleado.division}}</td>
+            <td>{{empleado.nombres}}</td>
+            <td>{{empleado.apellidos}}</td>
+            <td>{{empleado.correoElectronico}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}

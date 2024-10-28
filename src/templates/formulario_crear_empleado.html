@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    </div>
+    </nav>
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="León">
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="crear_empleado" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="usuarioAdv">Usuario Advertmind</label>
+                            <input type="text" class="form-control" id="usuarioAdv" name="usuarioAdv" placeholder="Usuario Advertmind" required>
+                            <div class="invalid-feedback">Por favor, ingresa un usuario.</div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="division">División</label>
+                            <select id="division" name="division" class="form-control" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                {% for division in divisiones %}
+                                    <option value="{{division.idDivision}}">{{division.division}}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Por favor, selecciona una división.</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nombres">Nombres</label>
+                            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" required>
+                            <div class="invalid-feedback">Por favor, ingresa tus nombres.</div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+                            <div class="invalid-feedback">Por favor, ingresa tus apellidos.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="correoElectronico">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" placeholder="name@example.com" required>
+                        <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido.</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="RS">
+{% endblock contenido %}

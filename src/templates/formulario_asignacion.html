@@ -4,19 +4,36 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <form>
+                <form action="crear_asignacion" method="post">
+                    <div class="form-group col-md-4">
+                        <label for="fecha">Fecha</label>
+                        <input type="text" class="form-control" id="fecha" name="fecha" value="{{fecha}}" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="idEmpleado">Usuario Advertmind</label>
+                        <select id="idEmpleado" name="idEmpleado" class="form-control">
+                            <option selected value="">Seleccione...</option>
+                            {% for empleado in empleados %}
+                                <option value="{{empleado.idEmpleado}}">{{empleado.usuarioAdv}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="form-group col-md-6">
-                        <label for="usuarioadvertmind">Usuario Advertmind</label>
-                        <input type="text" class="form-control" id="usuarioadvertmind" placeholder="Usuario Advertmind">
+                        <label for="division">División</label>
+                        <input type="text" class="form-control" id="division" name="division" readonly>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="correoElectronico">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="correoElectronico" placeholder="name@example.com" disabled>
+                            <label for="nombres">Nombres</label>
+                            <input type="text" class="form-control" id="nombres" name="nombres" readonly>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="division">División</label>
-                            <input type="text" class="form-control" id="divisionUsuario" placeholder="División" disabled>
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos" name="apellidos" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="correoElectronico">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" readonly>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -50,18 +67,37 @@
     </div>
     <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
     <script>
-        document.getElementById('codigo').addEventListener('input', function() {
-            var codigo = this.value;
-            var isSixDigits = codigo.length === 4;
-            document.getElementById('divisionUsuario').disabled = !isSixDigits;
-            document.getElementById('correoElectronico').disabled = !isSixDigits;
-            document.getElementById('categoriaActivo').disabled = !isSixDigits;
-            document.getElementById('tipoActivo').disabled = !isSixDigits;
-            document.getElementById('caracteristicas').disabled = !isSixDigits;
-            document.getElementById('divisionActivo').disabled = !isSixDigits;
-            document.querySelector('button[type="submit"]').disabled = !isSixDigits;
-        });
+    $('#idEmpleado').change(function() {
+        var idEmpleado= $(this).val();
+        if (idEmpleado !== "") {
+            $.ajax({
+                type: "GET",
+                url: "/empleados/" + idEmpleado,  // Asegúrate de que esta URL esté bien formada.
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(result) {
+                    console.log("Datos recibidos:");
+                    console.log(result);
+                    if (result.error) {
+                        console.error(result.error);
+                        return;
+                    }
+                    $('#division').val(result.division);
+                    $('#nombres').val(result.nombres);
+                    $('#apellidos').val(result.apellidos);
+                    $('#correoElectronico').val(result.correoElectronico);
+                },
+                error: function(err) {
+                    console.error("Se ha producido un error al obtener los datos: ", err);
+                }
+            });
+        } else {
+            $('#division').val('');
+            $('#nombres').val('');
+            $('#apellidos').val('');
+            $('#correoElectronico').val('');
+        }
+    });
     </script>
-</body>
-</html>
+    
 {% endblock contenido %}

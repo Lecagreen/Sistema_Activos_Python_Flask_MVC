@@ -4,10 +4,9 @@ from src.models.marcas import Marcas
 
 class Modelos(Base):
     __tablename__ = 'modelos'
-
     idModelo = Column(Integer, primary_key=True)
-    modelo = Column(String(10))
-    marca = Column(Integer, ForeignKey('marcas.idMarca'))
+    modelo = Column(String(20), nullable=False)
+    marca = Column(Integer, ForeignKey('marcas.idMarca'), nullable=False)
 
     def __init__(self, modelo, marca):
         self.modelo = modelo
@@ -17,7 +16,7 @@ class Modelos(Base):
         modelos = session.query(Modelos).join(Marcas).all()
         return modelos
         
-    def agregar_modelos():
+    def agregar_modelo(modelo):
         modelo = session.add(modelo)
         session.commit()
         return modelo

@@ -1,16 +1,17 @@
 {% extends 'layout.html' %}
+
 {% block contenido %}
     <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form>
+                <form action="crear_division" method="post">
                     <div class="form-group col-md-6" style="margin-bottom: 30px;">
                         <label for="division">Division</label>
-                        <input type="text" class="form-control" id="division" placeholder="Division" pattern="[A-Z\s]+" title="Solo se permiten letras mayúsculas y espacios">
+                        <input type="text" class="form-control" id="division" name="division" placeholder="Division" pattern="[A-Z\s]+" title="Solo se permiten letras mayúsculas y espacios">
                     </div>
                     <div class="text-center">
-                        <button type="guardar" class="btn btn-dark">Guardar</button>
+                        <button type="submit" class="btn btn-dark">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -19,7 +20,6 @@
     <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
 
     <script>
-        // Script para convertir el texto a mayúsculas mientras el usuario escribe
         document.getElementById('division').addEventListener('input', function (e) {
             e.target.value = e.target.value.toUpperCase();
         });

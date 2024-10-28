@@ -3,9 +3,8 @@ from src.models import session, Base
 
 class Divisiones(Base):
     __tablename__ = 'divisiones'
-
     idDivision = Column(Integer, primary_key=True)
-    division = Column(String(20), nullable=True)
+    division = Column(String(20), unique=True, nullable=True)
 
     def __init__(self, division):
         self.division = division
@@ -14,7 +13,7 @@ class Divisiones(Base):
         divisiones = session.query(Divisiones).all()
         return divisiones
         
-    def agregar_divisiones():
+    def agregar_division(division):
         division = session.add(division)
         session.commit()
         return division

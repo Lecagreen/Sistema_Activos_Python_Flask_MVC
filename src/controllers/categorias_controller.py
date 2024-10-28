@@ -1,0 +1,28 @@
+from src.app import app
+from flask import render_template, request, redirect, url_for, flash
+from flask_controller import FlaskController
+from src.models.categorias import Categorias
+
+class CategoriasController(FlaskController):
+    @app.route('/crear_categoria', methods=['POST','GET'])
+    def crear_categoria():
+        if request.method == 'POST':
+            categoria = request.form.get('categoria')
+            categoria = Categorias(categoria)
+            try:
+                Categorias.agregar_categoria(categoria)
+                flash("¡Categoría creada exitosamente!")
+                return redirect(url_for('ver_categorias'))
+            except Exception as e:
+                flash(f"Error al crear la categoría: {str(e)}")
+                return redirect(url_for('crear_categoria'))
+        return render_template('formulario_crear_categoria.html', titulo_pagina = 'Crear Categoria')
+
+    @app.route('/modificar_categoria')
+    def modificar_categoria():
+        return render_template('formulario_modificar_categoria.html')
+
+    @app.route('/ver_categorias')
+    def ver_categorias():
+        categorias = Categorias.obtener_categorias()
+        return render_template('tabla_categorias.html', titulo_pagina = 'Ver Categorias', categorias=categorias)

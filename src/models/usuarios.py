@@ -1,30 +1,28 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date
+from sqlalchemy import Column, Integer, String
 from src.models import session, Base
+from sqlalchemy_serializer import SerializerMixin
 
-class Usuarios(Base):
+class Usuarios(Base, SerializerMixin):    
     __tablename__ = 'usuarios'
-
     idUsuario = Column(Integer, primary_key=True)
-    usuarioAdv = Column(String(10), unique=True, nullable=True)
-    nombres = Column(String(50), nullable=True)
-    apellidos = Column(String(50), nullable=True)
-    fechaCreacion = Column(Date, nullable=True)
-    correoElectronico = Column(String(20), unique=True, nullable=True)
-    division = Column(String(50), nullable=False)
-
-    def __init__(self, usuarioAdv, nombres, apellidos, fechaCreacion, correoElectronico, division):
-        self.usuarioAdv = usuarioAdv
-        self.nombres = nombres
-        self.apellidos = apellidos
-        self.fechaCreacion = fechaCreacion
-        self.correoElectronico = correoElectronico
-        self.division = division
-
+    usuario = Column(String(20), unique=True, nullable=False)    
+    contrasena = Column(String(20), nullable=False)    
+    rol = Column(String(50), nullable=False)
+    
+    def __init__(self,usuario,contrasena,rol):
+        self.usuario=usuario
+        self.contrasena=contrasena
+        self.rol=rol
+        
     def obtener_usuarios():
-        usuarios = session.query(Usuarios).all()
+        usuarios = session.query(Usuarios.idUsuario, Usuarios.usuario, Usuarios.rol).all()              
         return usuarios
         
-    def agregar_usuarios():
-        usuario = session.add(usuario)
+    def obtener_por_idUsuario(idUsuario):
+        usuario = session.query(Usuarios).get(idUsuario)
+        return usuario.to_dict()
+
+    def agregar(usuario):
+        usuario = session.add(usuario)        
         session.commit()
         return usuario

@@ -2,30 +2,29 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from src.models import session, Base
 from src.models.marcas import Marcas
 from src.models.modelos import Modelos
-from src.models.ubicaciones import Ubicaciones
 from src.models.divisiones import Divisiones
 from src.models.categorias import Categorias
 from src.models.tipos import Tipos
+from src.models.divisiones import Divisiones
+from sqlalchemy_serializer import SerializerMixin
 
-class Activos(Base):
+class Activos(Base, SerializerMixin):
     __tablename__ = 'activos'
-
     idActivo = Column(Integer, primary_key=True)
-    codigo = Column(Integer)
+    codigo = Column(Integer, unique=True, nullable=False)
     tipo = Column(Integer, ForeignKey('tipos.idTipo'), nullable=False)
     categoria = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
     caracteristicas = Column(String(100), nullable=False)
-    marca = Column(Integer, ForeignKey('marcas.idMarca'), nullable=False)
-    modelo = Column(Integer, ForeignKey('modelos.idModelo'), nullable=False)
-    serial = Column(String(20), unique=True, nullable=False)
+    marca = Column(Integer, ForeignKey('marcas.idMarca'))
+    modelo = Column(Integer, ForeignKey('modelos.idModelo'))
+    serial = Column(String(20), unique=True)
     largo = Column(Float(10,2))
     ancho = Column(Float(10,2))
     alto = Column(Float(10,2))
     diametro = Column(Float(10,2))
     division = Column(Integer, ForeignKey('divisiones.idDivision'), nullable=False)
-    ubicacion = Column(Integer, ForeignKey('ubicaciones.idUbicacion'), nullable=False)
 
-    def __init__(self, codigo, tipo, categoria, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, ubicacion) -> None:
+    def __init__(self, codigo, tipo, categoria, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division):
         self.codigo = codigo
         self.tipo = tipo
         self.categoria = categoria
@@ -37,13 +36,23 @@ class Activos(Base):
         self.ancho = ancho
         self.alto = alto
         self.diametro = diametro
-        self.ubicacion = ubicacion
-
+        self.division = division
+  
     def obtener_activos():
-        activos = session.query(Activos).join(Marcas).join(Modelos).join(Ubicaciones).join(Divisiones).join(Categorias).join(Tipos).all()
-        return activos
+        try:
+            activos = session.query(Activos).join(Marcas).join(Modelos).join(Divisiones).join(Categorias).join(Tipos).all()
+
+            if not activos:
+                print("No hay activos disponibles.")
+                return []
+
+            print(activos[0].to_dict())
+            return activos
+        except Exception as e:
+            print(f"Error al obtener activos: {e}")
+            return []
         
-    def agregar_activos():
+    def agregar_activo(activo):
         activo = session.add(activo)
         session.commit()
         return activo
