@@ -1,5 +1,5 @@
 from src.app import app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_controller import FlaskController
 from src.models.activos import Activos
 from src.models.marcas import Marcas
@@ -51,3 +51,19 @@ class ActivosController(FlaskController):
     def ver_activos():
         activos = Activos.obtener_activos()
         return render_template('tabla_activos.html', titulo_pagina = 'Ver Activos', activos=activos)
+    
+    @app.route("/activos/<idActivo>")
+    def ver_activo(idActivo):
+        print(f"Buscando activo con codigo: {idActivo}")
+        activo = Activos.obtener_activo_por_id(idActivo)
+        if activo:
+            print(f"Activo encontrado: {activo}")
+            return jsonify({
+                'categoria': activo.get('categoria'),
+                'tipo': activo.get('tipo'),
+                'caracteristicas': activo.get('caracteristicas'),
+                'division': activo.get('division')
+            })
+        else:
+            print(f"No se encontró el activo con idActivo: {idActivo}")
+            return jsonify({'error': 'Empleado no encontrado'}), 404

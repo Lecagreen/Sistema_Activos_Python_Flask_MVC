@@ -31,16 +31,7 @@ class Empleados(Base, SerializerMixin):
         except Exception as e:
             print(f"Error al obtener empleado por ID {idEmpleado}: {e}")
             return None
-    
-    @staticmethod
-    def obtener_empleado(usuarioAdv):
-        try:
-            empleado = session.query(Empleados).filter_by(usuarioAdv=usuarioAdv).first()
-            return empleado.to_dict() if empleado else None
-        except Exception as e:
-            print(f"Error al obtener empleado {usuarioAdv}: {e}")
-            return None
-        
+          
     def agregar_empleado(empleado):
         empleado = session.add(empleado)
         session.commit()

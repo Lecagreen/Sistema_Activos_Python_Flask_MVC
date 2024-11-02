@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="division">División</label>
-                        <input type="text" class="form-control" id="division" name="division" readonly>
+                        <input type="text" class="form-control" id="divisionEmpleado" name="divisionEmpleado" readonly>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -36,26 +36,31 @@
                             <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" readonly>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="codigo">Código</label>
-                        <input type="number" class="form-control" id="codigo" placeholder="Código">
+                    <div class="form-group col-md-4">
+                        <label for="idActivo">Codigo Activo</label>
+                        <select id="idActivo" name="idActivo" class="form-control">
+                            <option selected value="">Seleccione...</option>
+                            {% for activo in activos %}
+                                <option value="{{activo.idActivo}}">{{activo.codigo}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="categoriaActivo">Categoría Activo</label>
-                            <input type="text" class="form-control" id="categoriaActivo" placeholder="Categoría" disabled>
+                            <label for="categoria">Categoría Activo</label>
+                            <input type="text" class="form-control" id="categoria" name="categoria" placeholder="Categoría" readonly>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="tipoActivo">Tipo Activo</label>
-                            <input type="text" class="form-control" id="tipoActivo" placeholder="Tipo Activo" disabled>
+                            <label for="tipo">Tipo Activo</label>
+                            <input type="text" class="form-control" id="tipo" name="tipo" placeholder="Tipo Activo" readonly>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="caracteristicas">Características</label>
-                            <input type="text" class="form-control text-uppercase" id="caracteristicas" placeholder="Características" disabled>
+                            <input type="text" class="form-control text-uppercase" id="caracteristicas" name="caracteristicas" placeholder="Características" readonly>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="divisionActivo">División</label>
-                            <input type="text" class="form-control" id="divisionActivo" placeholder="División" disabled>
+                            <label for="division">División</label>
+                            <input type="text" class="form-control" id="divisionActivo" name="divisionActivo" placeholder="División" readonly>
                         </div>
                     </div>
                     <div class="text-center">
@@ -72,7 +77,7 @@
         if (idEmpleado !== "") {
             $.ajax({
                 type: "GET",
-                url: "/empleados/" + idEmpleado,  // Asegúrate de que esta URL esté bien formada.
+                url: "/empleados/" + idEmpleado,
                 contentType: "application/json",
                 dataType: 'json',
                 success: function(result) {
@@ -82,7 +87,7 @@
                         console.error(result.error);
                         return;
                     }
-                    $('#division').val(result.division);
+                    $('#divisionEmpleado').val(result.division);
                     $('#nombres').val(result.nombres);
                     $('#apellidos').val(result.apellidos);
                     $('#correoElectronico').val(result.correoElectronico);
@@ -92,10 +97,42 @@
                 }
             });
         } else {
-            $('#division').val('');
+            $('#divisionEmpleado').val('');
             $('#nombres').val('');
             $('#apellidos').val('');
             $('#correoElectronico').val('');
+        }
+    });
+
+    $('#idActivo').change(function() {
+        var idActivo= $(this).val();
+        if (idActivo !== "") {
+            $.ajax({
+                type: "GET",
+                url: "/activos/" + idActivo,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(result) {
+                    console.log("Datos recibidos:");
+                    console.log(result);
+                    if (result.error) {
+                        console.error(result.error);
+                        return;
+                    }
+                    $('#categoria').val(result.categoria);
+                    $('#tipo').val(result.tipo);
+                    $('#caracteristicas').val(result.caracteristicas);
+                    $('#divisionActivo').val(result.division);
+                },
+                error: function(err) {
+                    console.error("Se ha producido un error al obtener los datos: ", err);
+                }
+            });
+        } else {
+            $('#categoria').val('');
+            $('#tipo').val('');
+            $('#caracteristicas').val('');
+            $('#divisionActivo').val('');
         }
     });
     </script>
