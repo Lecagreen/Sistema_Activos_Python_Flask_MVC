@@ -12,7 +12,7 @@ class Activos(Base, SerializerMixin):
     __tablename__ = 'activos'
     idActivo = Column(Integer, primary_key=True)
     codigo = Column(Integer, unique=True, nullable=False)
-    categoria = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
+    categoria_id = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
     tipo = Column(Integer, ForeignKey('tipos.idTipo'), nullable=False)
     caracteristicas = Column(String(100), nullable=False)
     marca = Column(Integer, ForeignKey('marcas.idMarca'))
@@ -24,9 +24,9 @@ class Activos(Base, SerializerMixin):
     diametro = Column(Float(10,2))
     division = Column(Integer, ForeignKey('divisiones.idDivision'), nullable=False)
 
-    def __init__(self, codigo, categoria, tipo, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division):
+    def __init__(self, codigo, categoria_id, tipo, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division):
         self.codigo = codigo
-        self.categoria = categoria
+        self.categoria_id = categoria_id
         self.tipo = tipo
         self.caracteristicas = caracteristicas
         self.marca = marca
@@ -39,38 +39,47 @@ class Activos(Base, SerializerMixin):
         self.division = division
   
     def obtener_activos():
-        try:
-            activos = session.query(Activos).join(Marcas).join(Modelos).join(Divisiones).join(Categorias).join(Tipos).all()
-
-            if not activos:
-                print("No hay activos disponibles.")
-                return []
-
-            print(activos[0].to_dict())
-            return activos
-        except Exception as e:
-            print(f"Error al obtener activos: {e}")
-            return []
+        activos = session.query(Activos, Categorias, Tipos, Marcas, Modelos, Divisiones) \
+                         .join(Categorias, Activos.categoria_id == Categorias.idCategoria) \
+                         .join(Tipos, Activos.tipo == Tipos.idTipo) \
+                         .join(Marcas, Activos.marca == Marcas.idMarca) \
+                         .join(Modelos, Activos.modelo == Modelos.idModelo) \
+                         .join(Divisiones, Activos.division == Divisiones.idDivision).all()
+        print(activos)
+        return activos
+    
+    @staticmethod
+    def obtener_activos_asignacion():
+        activos = session.query(Activos).all()
+        return activos
         
     def agregar_activo(activo):
         activo = session.add(activo)
         session.commit()
         return activo
-    
-    def to_dict_custom(self):
-
-        return {
-            'categoria': self.categoria,
-            'tipo': self.tipo,
-            'caracteristicas': self.caracteristicas,
-            'division': self.division 
-        }
 
     @staticmethod
     def obtener_activo_por_id(idActivo):
         try:
-            activo = session.query(Activos).filter_by(idActivo=idActivo).first()
-            return activo.to_dict_custom() if activo else None
+            activo = (
+                session.query(Activos,Categorias, Tipos, Divisiones)
+                .join(Categorias,Activos.categoria_id == Categorias.idCategoria)
+                .join(Tipos,Activos.tipo == Tipos.idTipo)
+                .join(Divisiones, Activos.division == Divisiones.idDivision)
+                .filter(Activos.idActivo == idActivo)
+                .first()
+            )
+            if activo:
+                activo_info, categoria_info, tipo_info, division_info = activo
+                return {
+                    'idActivo': activo_info.idActivo,
+                    'categoriaActivo': categoria_info.categoria,
+                    'tipoActivo': tipo_info.tipo,
+                    'caracteristicas': activo_info.caracteristicas,
+                    'divisionActivo': division_info.division
+                }
+            else:
+                return None
         except Exception as e:
             print(f"Error al obtener activo por ID {idActivo}: {e}")
             return None

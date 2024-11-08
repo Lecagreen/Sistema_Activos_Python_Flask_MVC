@@ -35,7 +35,7 @@ class EmpleadosController(FlaskController):
         if empleado:
             print(f"Empleado encontrado: {empleado}")
             return jsonify({
-                'division': empleado['division'],
+                'divisionEmpleado': empleado['divisionEmpleado'],
                 'nombres': empleado['nombres'],
                 'apellidos': empleado['apellidos'],
                 'correoElectronico': empleado['correoElectronico']

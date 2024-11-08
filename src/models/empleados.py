@@ -20,14 +20,35 @@ class Empleados(Base, SerializerMixin):
         self.correoElectronico = correoElectronico
 
     def obtener_empleados():
-        empleados = session.query(Empleados).join(Divisiones).all()
+        empleados = session.query(Empleados, Divisiones).join(Divisiones, Empleados.division == Divisiones.idDivision).all()
+        return empleados
+    
+    @staticmethod
+    def obtener_empleados_asignacion():
+        empleados = session.query(Empleados).all()
         return empleados
     
     @staticmethod
     def obtener_empleado_por_id(idEmpleado):
         try:
-            empleado = session.query(Empleados).filter_by(idEmpleado=idEmpleado).first()
-            return empleado.to_dict() if empleado else None
+            empleado = (
+                session.query(Empleados, Divisiones)
+                .join(Divisiones, Empleados.division == Divisiones.idDivision)
+                .filter(Empleados.idEmpleado == idEmpleado)
+                .first()
+            )
+            if empleado:
+                empleado_info, division_info = empleado
+                return {
+                    'idEmpleado': empleado_info.idEmpleado,
+                    'usuarioAdv': empleado_info.usuarioAdv,
+                    'nombres': empleado_info.nombres,
+                    'apellidos': empleado_info.apellidos,
+                    'correoElectronico': empleado_info.correoElectronico,
+                    'divisionEmpleado': division_info.division
+                }
+            else:
+                return None
         except Exception as e:
             print(f"Error al obtener empleado por ID {idEmpleado}: {e}")
             return None

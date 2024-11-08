@@ -24,19 +24,19 @@
         <tbody>
           {% for activo in activos %}
             <tr>  
-              <th scope="row">{{activo.idActivo}}</th>
-              <td>{{activo.codigo}}</td>
-              <td>{{activo.categoria}}</td>
-              <td>{{activo.tipo}}</td>
-              <td>{{activo.division}}</td>
-              <td>{{activo.caracteristicas}}</td>
-              <td>{{activo.marca}}</td>
-              <td>{{activo.modelo}}</td>
-              <td>{{activo.serial}}</td>
-              <td>{{activo.largo}}</td>
-              <td>{{activo.ancho}}</td>
-              <td>{{activo.alto}}</td>
-              <td>{{activo.diametro}}</td>
+              <th scope="row">{{activo.Activos.idActivo}}</th>
+              <td>{{activo.Activos.codigo}}</td>
+              <td>{{activo.Categorias.categoria}}</td>
+              <td>{{activo.Tipos.tipo}}</td>
+              <td>{{activo.Divisiones.division}}</td>
+              <td>{{activo.Activos.caracteristicas}}</td>
+              <td>{{activo.Marcas.marca}}</td>
+              <td>{{activo.Modelos.modelo}}</td>
+              <td>{{activo.Activos.serial}}</td>
+              <td>{{activo.Activos.largo}}</td>
+              <td>{{activo.Activos.ancho}}</td>
+              <td>{{activo.Activos.alto}}</td>
+              <td>{{activo.Activos.diametro}}</td>
             </tr>
           {% endfor %}
         </tbody>

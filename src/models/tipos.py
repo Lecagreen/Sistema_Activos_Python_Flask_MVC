@@ -12,8 +12,14 @@ class Tipos(Base):
         self.tipo = tipo
         self.categoria = categoria
 
+    def obtener_tipos_activo():
+        tipos = session.query(Tipos).all()
+        print(tipos)
+        return tipos
+
     def obtener_tipos():
-        tipos = session.query(Tipos).join(Categorias).all()
+        tipos = session.query(Tipos, Categorias).join(Categorias, Tipos.categoria == Categorias.idCategoria ).all()
+        print(Tipos)
         return tipos
         
     def agregar_tipo(tipo):

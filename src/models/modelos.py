@@ -12,8 +12,13 @@ class Modelos(Base):
         self.modelo = modelo
         self.marca = marca
 
+    def obtener_modelos_activo():
+        modelos = session.query(Modelos).all()
+        print(modelos)
+        return modelos
+
     def obtener_modelos():
-        modelos = session.query(Modelos).join(Marcas).all()
+        modelos = session.query(Modelos, Marcas).join(Marcas, Modelos.marca == Marcas.idMarca).all()
         return modelos
         
     def agregar_modelo(modelo):

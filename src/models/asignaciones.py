@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from src.models import session, Base
+from src.models.empleados import Empleados
+from src.models.activos import Activos
 
 class Asignaciones(Base):
     __tablename__ = 'asignaciones'
@@ -14,7 +16,9 @@ class Asignaciones(Base):
         self.activo=activo
         
     def obtener_asignaciones():
-        asignaciones = session.query(Asignaciones).all()              
+        asignaciones = session.query(Asignaciones, Empleados, Activos) \
+                              .join(Empleados, Asignaciones.empleado == Empleados.idEmpleado) \
+                              .join(Activos, Asignaciones.activo == Activos.idActivo).all()              
         return asignaciones
 
     def agregar_asignacion(asignacion):

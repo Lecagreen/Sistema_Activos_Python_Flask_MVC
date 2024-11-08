@@ -14,9 +14,8 @@ class ActivosController(FlaskController):
     def crear_activo():
         if request.method == 'POST':
             codigo = request.form.get('codigo')
-            categoria = request.form.get('categoria')
+            categoria_id = request.form.get('categoria')
             tipo = request.form.get('tipo')
-            division = request.form.get('division')
             caracteristicas = request.form.get('caracteristicas')
             marca = request.form.get('marca')
             modelo = request.form.get('modelo')
@@ -25,21 +24,22 @@ class ActivosController(FlaskController):
             ancho = request.form.get('ancho')
             alto = request.form.get('alto')
             diametro = request.form.get('diametro')
+            division = request.form.get('division')
 
-            print(f"codigo: {codigo}, tipo: {tipo}, categoria: {categoria}, caracteristicas: {caracteristicas}, division: {division}")
+            print(f"codigo: {codigo}, tipo: {tipo}, categoria: {categoria_id}, caracteristicas: {caracteristicas}, division: {division}")
 
-            if not all([codigo, tipo, categoria, caracteristicas, division]):
+            if not all([codigo, tipo, categoria_id, caracteristicas, division]):
                 raise ValueError("Los campos obligatorios no pueden contener valores nulos.")
 
-            activo = Activos(codigo, tipo, categoria, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division)
+            activo = Activos(codigo, tipo, categoria_id, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division)
             Activos.agregar_activo(activo)
             return redirect(url_for('ver_activos'))
 
         categorias = Categorias.obtener_categorias()
-        tipos = Tipos.obtener_tipos()
+        tipos = Tipos.obtener_tipos_activo()
         divisiones = Divisiones.obtener_divisiones()
         marcas = Marcas.obtener_marcas()
-        modelos = Modelos.obtener_modelos()
+        modelos = Modelos.obtener_modelos_activo()
 
         return render_template('formulario_crear_activo.html', titulo_pagina='Crear Activo', categorias=categorias, tipos=tipos, divisiones=divisiones, marcas=marcas, modelos=modelos)
 
@@ -59,10 +59,10 @@ class ActivosController(FlaskController):
         if activo:
             print(f"Activo encontrado: {activo}")
             return jsonify({
-                'categoria': activo.get('categoria'),
-                'tipo': activo.get('tipo'),
+                'categoriaActivo': activo.get('categoriaActivo'),
+                'tipoActivo': activo.get('tipoActivo'),
                 'caracteristicas': activo.get('caracteristicas'),
-                'division': activo.get('division')
+                'divisionActivo': activo.get('divisionActivo')
             })
         else:
             print(f"No se encontró el activo con idActivo: {idActivo}")

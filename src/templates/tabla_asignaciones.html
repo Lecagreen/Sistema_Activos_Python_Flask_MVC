@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Fecha Asignación</th>
+            <th scope="col">Empleado</th>
+            <th scope="col">Activo</th>
+
+        </thead>
+        <tbody>
+          {% for asignacion in asignaciones %}
+            <tr>  
+              <th scope="row">{{asignacion.Asignaciones.idAsignacion}}</th>
+              <td>{{asignacion.Asignaciones.fecha}}</td>
+              <td>{{asignacion.Empleados.usuarioAdv}}</td>
+              <td>{{asignacion.Activos.codigo}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}

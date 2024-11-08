@@ -87,7 +87,7 @@
                         console.error(result.error);
                         return;
                     }
-                    $('#divisionEmpleado').val(result.division);
+                    $('#divisionEmpleado').val(result.divisionEmpleado);
                     $('#nombres').val(result.nombres);
                     $('#apellidos').val(result.apellidos);
                     $('#correoElectronico').val(result.correoElectronico);
@@ -119,10 +119,10 @@
                         console.error(result.error);
                         return;
                     }
-                    $('#categoria').val(result.categoria);
-                    $('#tipo').val(result.tipo);
+                    $('#categoria').val(result.categoriaActivo);
+                    $('#tipo').val(result.tipoActivo);
                     $('#caracteristicas').val(result.caracteristicas);
-                    $('#divisionActivo').val(result.division);
+                    $('#divisionActivo').val(result.divisionActivo);
                 },
                 error: function(err) {
                     console.error("Se ha producido un error al obtener los datos: ", err);

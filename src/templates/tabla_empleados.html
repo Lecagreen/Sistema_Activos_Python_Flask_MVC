@@ -17,12 +17,12 @@
         <tbody>
           {% for empleado in empleados %}
           <tr>  
-            <th scope="row">{{empleado.idEmpleado}}</th>
-            <td>{{empleado.usuarioAdv}}</td>
-            <td>{{empleado.division}}</td>
-            <td>{{empleado.nombres}}</td>
-            <td>{{empleado.apellidos}}</td>
-            <td>{{empleado.correoElectronico}}</td>
+            <th scope="row">{{empleado.Empleados.idEmpleado}}</th>
+            <td>{{empleado.Empleados.usuarioAdv}}</td>
+            <td>{{empleado.Divisiones.division}}</td>
+            <td>{{empleado.Empleados.nombres}}</td>
+            <td>{{empleado.Empleados.apellidos}}</td>
+            <td>{{empleado.Empleados.correoElectronico}}</td>
           </tr>
           {% endfor %}
         </tbody>

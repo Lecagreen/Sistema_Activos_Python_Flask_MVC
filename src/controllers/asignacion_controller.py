@@ -7,7 +7,7 @@ from src.models.activos import Activos
 import datetime
 
 class AsignacionesController(FlaskController):    
-    @app.route("/asignaciones")
+    @app.route("/ver_asignaciones")
     def asignaciones():
         asignaciones = Asignaciones.obtener_asignaciones()
         return render_template('tabla_asignaciones.html', titulo="Lista de Asignaciones", asignaciones=asignaciones)
@@ -16,19 +16,20 @@ class AsignacionesController(FlaskController):
     def crear_asignacion():
         if request.method == 'POST':
             fecha = request.form.get('fecha')
-            empleado = request.form.get('empleado')
-            activo = request.form.get('activo')
+            empleado = request.form.get('idEmpleado')
+            activo = request.form.get('idActivo')
             if not fecha:
                 flash('La fecha es un campo obligatorio')   
             elif not empleado:
                 flash('El empleado es un campo obligatorio')     
             elif not activo:
-                flash('El usuario es un campo obligatorio')     
+                flash('El activo es un campo obligatorio')     
             else:          
                 asignacion = Asignaciones(fecha,empleado,activo)
                 Asignaciones.agregar_asignacion(asignacion)
-                return redirect(url_for('asignaciones'))    
+                return redirect(url_for('ver_asignaciones'))  
+              
         fecha =  datetime.datetime.now().strftime('%Y-%m-%d')
-        empleados = Empleados.obtener_empleados()
-        activos = Activos.obtener_activos()
+        empleados = Empleados.obtener_empleados_asignacion()
+        activos = Activos.obtener_activos_asignacion()
         return render_template('formulario_asignacion.html', titulo="Asignacion", fecha=fecha, empleados=empleados, activos=activos)
