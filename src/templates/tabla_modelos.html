@@ -17,6 +17,10 @@
               <th scope="row">{{modelo.Modelos.idModelo}}</th>
               <td>{{modelo.Modelos.modelo}}</td>
               <td>{{modelo.Marcas.marca}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_modelo/{{modelo.Modelos.idModelo}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_modelo/{{modelo.Modelos.idModelo}}">Editar</a>
+              </td> 
             </tr>
           {% endfor %}
         </tbody>

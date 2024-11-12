@@ -15,6 +15,10 @@
             <tr>  
               <th scope="row">{{categoria.idCategoria}}</th>
               <td>{{categoria.categoria}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_categoria/{{categoria.idCategoria}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_categoria/{{categoria.idCategoria}}">Editar</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>

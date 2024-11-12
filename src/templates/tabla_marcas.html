@@ -15,6 +15,10 @@
             <tr>  
               <th scope="row">{{marca.idMarca}}</th>
               <td>{{marca.marca}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_marca/{{marca.idMarca}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_marca/{{marca.idMarca}}">Editar</a>
+              </td>              
             </tr>
           {% endfor %}
         </tbody>

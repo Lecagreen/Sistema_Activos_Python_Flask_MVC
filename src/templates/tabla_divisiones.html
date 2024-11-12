@@ -15,6 +15,10 @@
             <tr>  
               <th scope="row">{{division.idDivision}}</th>
               <td>{{division.division}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_division/{{division.idDivision}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_division/{{division.idDivision}}">Editar</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>

@@ -16,6 +16,10 @@ class Modelos(Base):
         modelos = session.query(Modelos).all()
         print(modelos)
         return modelos
+    
+    @staticmethod
+    def obtener_modelo_por_id(idModelo):
+        return session.query(Modelos).filter(Modelos.idModelo == idModelo).first()
 
     def obtener_modelos():
         modelos = session.query(Modelos, Marcas).join(Marcas, Modelos.marca == Marcas.idMarca).all()
@@ -23,5 +27,10 @@ class Modelos(Base):
         
     def agregar_modelo(modelo):
         modelo = session.add(modelo)
+        session.commit()
+        return modelo
+    
+    def editar_modelo(modelo):
+        modelo = session.merge(modelo)
         session.commit()
         return modelo

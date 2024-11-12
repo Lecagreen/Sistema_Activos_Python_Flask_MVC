@@ -13,8 +13,18 @@ class Marcas(Base):
     def obtener_marcas():
         marcas = session.query(Marcas).all()
         return marcas
+    
+    @staticmethod
+    def obtener_marca_por_id(idMarca):
+        return session.query(Marcas).filter(Marcas.idMarca == idMarca).first()
         
     def agregar_marca(marca):
         marca = session.add(marca)
+        session.commit()
+        return marca
+    
+    @staticmethod
+    def editar_marca(marca):
+        session.merge(marca)
         session.commit()
         return marca

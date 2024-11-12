@@ -12,8 +12,18 @@ class Divisiones(Base):
     def obtener_divisiones():
         divisiones = session.query(Divisiones).all()
         return divisiones
+    
+    @staticmethod
+    def obtener_division_por_id(idDivision):
+        return session.query(Divisiones).filter(Divisiones.idDivision == idDivision).first()
         
     def agregar_division(division):
         division = session.add(division)
+        session.commit()
+        return division
+    
+    @staticmethod
+    def editar_division(division):
+        session.merge(division)
         session.commit()
         return division

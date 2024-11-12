@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form action="{{ url_for('editar_marca', idMarca=marca_actual.idMarca) }}" method="post">
+                    <div class="form-group col-md-6" style="margin-bottom: 20px;">
+                        <label for="marca">Marca</label>
+                        <input type="text" class="form-control" id="nueva_marca" name="marca" value="{{ marca_actual.marca }}" disabled required>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <button type="button" id="modificar-btn" class="btn btn-dark mb-2">Modificar</button>
+                        <div class="d-flex justify-content-center w-100">
+                            <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
+                            <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <script>
+                    document.getElementById('modificar-btn').addEventListener('click', function() {
+                        var nuevaMarcaInput = document.getElementById('nueva_marca');
+                        nuevaMarcaInput.disabled = false; 
+                        document.getElementById('guardar-btn').style.display = 'block';
+                        document.getElementById('cancelar-btn').style.display = 'block';
+                    });
+
+                    document.getElementById('cancelar-btn').addEventListener('click', function() {
+                        window.location.href = "{{ url_for('ver_marcas') }}";
+                    });
+                </script>
+{% endblock contenido %}

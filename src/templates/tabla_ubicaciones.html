@@ -19,6 +19,10 @@
               <td>{{ubicacion.ubicacion}}</td>
               <td>{{ubicacion.piso}}</td>
               <td>{{ubicacion.puesto}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_ubicacion/{{ubicacion.idUbicacion}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_ubicacion/{{ubicacion.idUbicacion}}">Editar</a>
+              </td> 
             </tr>
           {% endfor %}
         </tbody>

@@ -19,6 +19,10 @@
               <td>{{asignacion.Asignaciones.fecha}}</td>
               <td>{{asignacion.Empleados.usuarioAdv}}</td>
               <td>{{asignacion.Activos.codigo}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_asignacion/{{asignacion.Asignaciones.idAsignacion}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_asignacion/{{asignacion.Asignaciones.idAsignacion}}">Editar</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>

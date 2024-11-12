@@ -4,6 +4,7 @@ from flask_controller import FlaskController
 from src.models.categorias import Categorias
 
 class CategoriasController(FlaskController):
+
     @app.route('/crear_categoria', methods=['POST','GET'])
     def crear_categoria():
         if request.method == 'POST':
@@ -18,9 +19,21 @@ class CategoriasController(FlaskController):
                 return redirect(url_for('crear_categoria'))
         return render_template('formulario_crear_categoria.html', titulo_pagina = 'Crear Categoria')
 
-    @app.route('/modificar_categoria')
-    def modificar_categoria():
-        return render_template('formulario_modificar_categoria.html')
+    @app.route('/editar_categoria/<int:idCategoria>', methods=['POST', 'GET'])
+    def editar_categoria(idCategoria):
+        categoria_actual = Categorias.obtener_categoria_por_id(idCategoria)
+        if request.method == 'POST':
+            nueva_categoria = request.form.get('categoria')
+            try:
+                categoria_actual.categoria = nueva_categoria
+                Categorias.editar_categoria(categoria_actual)
+                flash("¡Categoría modificada exitosamente!")
+                return redirect(url_for('ver_categorias'))
+            except Exception as e:
+                flash(f"Error al modificar la categoría: {str(e)}")
+                return redirect(url_for('editar_categoria', idCategoria=idCategoria))
+        categorias = Categorias.obtener_categorias()
+        return render_template('formulario_editar_categoria.html', titulo_pagina='Editar Categoria', categoria_actual=categoria_actual, categorias=categorias)
 
     @app.route('/ver_categorias')
     def ver_categorias():

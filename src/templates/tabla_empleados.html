@@ -23,6 +23,10 @@
             <td>{{empleado.Empleados.nombres}}</td>
             <td>{{empleado.Empleados.apellidos}}</td>
             <td>{{empleado.Empleados.correoElectronico}}</td>
+            <td>
+              <a class="btn btn-danger" href="eliminar_empleado/{{empleado.Empleados.idEmpleado}}">Eliminar</a>
+              <a class="btn btn-success" href="editar_empleado/{{empleado.Empleados.idEmpleado}}">Editar</a>
+            </td>          
           </tr>
           {% endfor %}
         </tbody>

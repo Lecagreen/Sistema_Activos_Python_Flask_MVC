@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+</div>
+</nav>
+<img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="León">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="editar_empleado_form" action="{{ url_for('editar_empleado', idEmpleado=empleado_actual.idEmpleado) }}" method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="usuarioAdv">Usuario Advertmind</label>
+                        <input type="text" class="form-control" id="usuarioAdv" name="usuarioAdv" value="{{ empleado_actual.usuarioAdv }}" required disabled>
+                        <div class="invalid-feedback">Por favor, ingresa un usuario.</div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="division">División</label>
+                        <select id="division" name="division" class="form-control" required disabled>
+                            <option value="" disabled>Seleccione...</option>
+                            {% for division in divisiones %}
+                            <option value="{{ division.idDivision }}" {% if division.idDivision == empleado_actual.division %}selected{% endif %}>{{ division.division }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Por favor, selecciona una división.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" name="nombres" value="{{ empleado_actual.nombres }}" required disabled>
+                        <div class="invalid-feedback">Por favor, ingresa tus nombres.</div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" value="{{ empleado_actual.apellidos }}" required disabled>
+                        <div class="invalid-feedback">Por favor, ingresa tus apellidos.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="correoElectronico">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" value="{{ empleado_actual.correoElectronico }}" required disabled>
+                    <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido.</div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-dark mb-2" id="editButton">Modificar</button>
+                    <div class="d-flex justify-content-center mt-2">
+                        <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
+                        <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="RS">
+
+<script>
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.querySelectorAll('#editar_empleado_form input, #editar_empleado_form select').forEach((element) => {
+            element.disabled = false;
+        });
+        document.getElementById('guardar-btn').style.display = 'inline-block';
+        document.getElementById('cancelar-btn').style.display = 'inline-block';
+    });
+
+    document.getElementById('cancelar-btn').addEventListener('click', function() {
+        window.location.href = "{{ url_for('ver_empleados') }}";
+    });
+</script>
+{% endblock contenido %}

@@ -57,3 +57,9 @@ class Empleados(Base, SerializerMixin):
         empleado = session.add(empleado)
         session.commit()
         return empleado
+    
+    @staticmethod
+    def editar_empleado(empleado):
+        session.merge(empleado)
+        session.commit()
+        return empleado

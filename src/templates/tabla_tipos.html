@@ -17,6 +17,10 @@
               <th scope="row">{{tipo.Tipos.idTipo}}</th>
               <td>{{tipo.Tipos.tipo}}</td>
               <td>{{tipo.Categorias.categoria}}</td>
+              <td>
+                <a class="btn btn-danger" href="eliminar_tipo/{{tipo.Tipos.idTipo}}">Eliminar</a>
+                <a class="btn btn-success" href="editar_tipo/{{tipo.Tipos.idTipo}}">Editar</a>
+              </td> 
             </tr>
           {% endfor %}
         </tbody>

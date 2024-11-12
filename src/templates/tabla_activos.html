@@ -1,11 +1,9 @@
 {% extends 'layout.html' %}
-{% block contenido %}
 
-    </div>
-      </nav>
-      <table class="table">
-        <thead>
-          <tr>
+{% block contenido %}
+<table class="table">
+    <thead>
+        <tr>
             <th scope="col">#</th>
             <th scope="col">Código</th>
             <th scope="col">Categoría Activo</th>
@@ -19,29 +17,37 @@
             <th scope="col">Ancho</th>
             <th scope="col">Alto</th>
             <th scope="col">Diametro</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for activo in activos %}
-            <tr>  
-              <th scope="row">{{activo.Activos.idActivo}}</th>
-              <td>{{activo.Activos.codigo}}</td>
-              <td>{{activo.Categorias.categoria}}</td>
-              <td>{{activo.Tipos.tipo}}</td>
-              <td>{{activo.Divisiones.division}}</td>
-              <td>{{activo.Activos.caracteristicas}}</td>
-              <td>{{activo.Marcas.marca}}</td>
-              <td>{{activo.Modelos.modelo}}</td>
-              <td>{{activo.Activos.serial}}</td>
-              <td>{{activo.Activos.largo}}</td>
-              <td>{{activo.Activos.ancho}}</td>
-              <td>{{activo.Activos.alto}}</td>
-              <td>{{activo.Activos.diametro}}</td>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if activos %}
+            {% for activo in activos %}
+                <tr>
+                    <th scope="row">{{ activo.Activos.idActivo }}</th>
+                    <td>{{ activo.Activos.codigo }}</td>
+                    <td>{{ activo.Categorias.categoria }}</td>
+                    <td>{{ activo.Tipos.tipo }}</td>
+                    <td>{{ activo.Divisiones.division }}</td>
+                    <td>{{ activo.Activos.caracteristicas }}</td>
+                    <td>{{ activo.Marcas.marca if activo.Marcas else 'N/A' }}</td>
+                    <td>{{ activo.Modelos.modelo if activo.Modelos else 'N/A' }}</td>
+                    <td>{{ activo.Activos.serial }}</td>
+                    <td>{{ activo.Activos.largo }}</td>
+                    <td>{{ activo.Activos.ancho }}</td>
+                    <td>{{ activo.Activos.alto }}</td>
+                    <td>{{ activo.Activos.diametro }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="eliminar_activo/{{ activo.Activos.idActivo }}">Eliminar</a>
+                        <a class="btn btn-success" href="editar_activo/{{ activo.Activos.idActivo }}">Editar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="14">No hay activos para mostrar</td>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-  </body>
-  </html>
-
+        {% endif %}
+    </tbody>
+</table>
 {% endblock contenido %}

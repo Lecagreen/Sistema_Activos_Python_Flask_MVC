@@ -16,9 +16,29 @@ class TiposController(FlaskController):
         categorias = Categorias.obtener_categorias()
         return render_template('formulario_crear_tipo.html', titulo_pagina = 'Crear Tipo', categorias=categorias)
 
-    @app.route('/modificar_tipo')
-    def modificar_tipo():
-        return render_template('formulario_modificar_tipo.html')
+    @app.route('/editar_tipo/<int:idTipo>', methods=['POST', 'GET'])
+    def editar_tipo(idTipo):
+        tipo_actual = Tipos.obtener_tipo_por_id(idTipo)
+        categorias = Categorias.obtener_categorias()
+
+        if not tipo_actual:
+            flash("Tipo no encontrado")
+            return redirect(url_for("ver_tipos"))
+
+        if request.method == 'POST':
+            try:
+                tipo_actual.tipo = request.form.get('tipo')
+                tipo_actual.categoria = request.form.get('categoria')
+                
+                Tipos.editar_tipo(tipo_actual)
+                flash("¡Tipo modificado exitosamente!")
+                return redirect(url_for('ver_tipos'))
+            except Exception as e:
+                flash(f"Error al modificar el tipo: {str(e)}")
+                return redirect(url_for('editar_tipo', idTipo=idTipo))
+        
+        return render_template('formulario_editar_tipo.html', titulo_pagina='Editar Tipo', 
+                               tipo_actual=tipo_actual, categorias=categorias)
 
     @app.route('/ver_tipos')
     def ver_tipos():

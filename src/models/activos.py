@@ -1,32 +1,32 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from src.models import session, Base
 from src.models.marcas import Marcas
 from src.models.modelos import Modelos
 from src.models.divisiones import Divisiones
 from src.models.categorias import Categorias
 from src.models.tipos import Tipos
-from src.models.divisiones import Divisiones
 from sqlalchemy_serializer import SerializerMixin
 
 class Activos(Base, SerializerMixin):
     __tablename__ = 'activos'
+    
     idActivo = Column(Integer, primary_key=True)
     codigo = Column(Integer, unique=True, nullable=False)
-    categoria_id = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
+    categoria = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
     tipo = Column(Integer, ForeignKey('tipos.idTipo'), nullable=False)
     caracteristicas = Column(String(100), nullable=False)
-    marca = Column(Integer, ForeignKey('marcas.idMarca'))
-    modelo = Column(Integer, ForeignKey('modelos.idModelo'))
-    serial = Column(String(20), unique=True)
-    largo = Column(Float(10,2))
-    ancho = Column(Float(10,2))
-    alto = Column(Float(10,2))
-    diametro = Column(Float(10,2))
+    marca = Column(Integer, ForeignKey('marcas.idMarca'), nullable=True)
+    modelo = Column(Integer, ForeignKey('modelos.idModelo'), nullable=True)
+    serial = Column(String(20), unique=True, nullable=True)
+    largo = Column(String(6), nullable=True)
+    ancho = Column(String(6), nullable=True)
+    alto = Column(String(6),nullable=True)
+    diametro = Column(String(6), nullable=True)
     division = Column(Integer, ForeignKey('divisiones.idDivision'), nullable=False)
 
-    def __init__(self, codigo, categoria_id, tipo, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division):
+    def __init__(self, codigo, categoria, tipo, caracteristicas, marca, modelo, serial, largo, ancho, alto, diametro, division):
         self.codigo = codigo
-        self.categoria_id = categoria_id
+        self.categoria = categoria
         self.tipo = tipo
         self.caracteristicas = caracteristicas
         self.marca = marca
@@ -37,33 +37,79 @@ class Activos(Base, SerializerMixin):
         self.alto = alto
         self.diametro = diametro
         self.division = division
-  
-    def obtener_activos():
-        activos = session.query(Activos, Categorias, Tipos, Marcas, Modelos, Divisiones) \
-                         .join(Categorias, Activos.categoria_id == Categorias.idCategoria) \
-                         .join(Tipos, Activos.tipo == Tipos.idTipo) \
-                         .join(Marcas, Activos.marca == Marcas.idMarca) \
-                         .join(Modelos, Activos.modelo == Modelos.idModelo) \
-                         .join(Divisiones, Activos.division == Divisiones.idDivision).all()
-        print(activos)
-        return activos
-    
-    @staticmethod
-    def obtener_activos_asignacion():
-        activos = session.query(Activos).all()
-        return activos
-        
-    def agregar_activo(activo):
-        activo = session.add(activo)
-        session.commit()
-        return activo
 
+    def __repr__(self):
+        return f"<Activos(idActivo={self.idActivo}, codigo={self.codigo}, caracteristicas='{self.caracteristicas}', serial='{self.serial}')>"
+
+    @staticmethod
+    def obtener_activos():
+        try:
+            activos = session.query(Activos, Categorias, Tipos, Marcas, Modelos, Divisiones) \
+                            .join(Categorias, Activos.categoria == Categorias.idCategoria) \
+                            .join(Tipos, Activos.tipo == Tipos.idTipo) \
+                            .outerjoin(Marcas, Activos.marca == Marcas.idMarca) \
+                            .outerjoin(Modelos, Activos.modelo == Modelos.idModelo) \
+                            .join(Divisiones, Activos.division == Divisiones.idDivision).all()
+            for act in activos:
+                print(act)
+            return activos
+        except Exception as e:
+            print(f"Error al obtener activos: {e}")
+            return []
+
+    @staticmethod
+    def agregar_activo(activo):
+        try:
+            session.add(activo)
+            session.commit()
+            return activo
+        except Exception as e:
+            session.rollback()
+            print(f"Error al agregar activo: {e}")
+            return None
+    
     @staticmethod
     def obtener_activo_por_id(idActivo):
         try:
             activo = (
+                session.query(Activos, Categorias, Tipos, Divisiones)
+                .join(Categorias, Activos.categoria == Categorias.idCategoria)
+                .join(Tipos, Activos.tipo == Tipos.idTipo)
+                .join(Marcas, Activos.marca == Marcas.idMarca )
+                .join(Modelos, Activos.modelo == Modelos.idModelo)
+                .join(Divisiones, Activos.division == Divisiones.idDivision)
+                .filter(Activos.idActivo == idActivo)
+                .first()
+            )
+            if activo:
+                activo_info, categoria_info, tipo_info, division_info = activo
+                return {
+                    'idActivo': activo_info.idActivo,
+                    'codigo': activo_info.codigo,
+                    'categoriaActivo': categoria_info.categoria,
+                    'tipoActivo': tipo_info.tipo,
+                    'caracteristicas': activo_info.caracteristicas,
+                    'marca': activo_info.marca or " ",
+                    'modelo': activo_info.modelo or " ",
+                    'serial': activo_info.serial or " ",
+                    'largo': activo_info.largo or " ",
+                    'ancho': activo_info.ancho or " ",
+                    'alto': activo_info.alto or " ",
+                    'diametro': activo_info.diametro or " ",
+                    'divisionActivo': division_info.division
+                }
+            else:
+                return None
+        except Exception as e:
+            print(f"Error al obtener activo por ID {idActivo}: {e}")
+            return None
+    
+    @staticmethod
+    def obtener_activo_asignacion(idActivo):
+        try:
+            activo = (
                 session.query(Activos,Categorias, Tipos, Divisiones)
-                .join(Categorias,Activos.categoria_id == Categorias.idCategoria)
+                .join(Categorias,Activos.categoria == Categorias.idCategoria)
                 .join(Tipos,Activos.tipo == Tipos.idTipo)
                 .join(Divisiones, Activos.division == Divisiones.idDivision)
                 .filter(Activos.idActivo == idActivo)
@@ -83,3 +129,14 @@ class Activos(Base, SerializerMixin):
         except Exception as e:
             print(f"Error al obtener activo por ID {idActivo}: {e}")
             return None
+        
+    @staticmethod
+    def obtener_activos_asignacion():
+        activos = session.query(Activos).all()
+        return activos
+        
+    @staticmethod
+    def editar_activo(activo):
+        session.merge(activo)
+        session.commit()
+        return activo

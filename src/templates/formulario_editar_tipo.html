@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="editar_tipo_form" action="{{ url_for('editar_tipo', idTipo=tipo_actual.idTipo) }}" method="post">
+                    <div class="form-group col-md-6" style="margin-bottom: 20px;">
+                        <label for="tipo">Tipo</label>
+                        <input type="text" class="form-control" id="nuevo_tipo" name="tipo" value="{{ tipo_actual.tipo }}" disabled required>
+                    </div>
+                    <div class="form-group col-md-6" style="margin-bottom: 30px;">
+                        <label for="categoria">Categoría Activo</label>
+                        <select id="categoria" name="categoria" class="form-control" required disabled>
+                            <option value="" disabled>Seleccione...</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.idCategoria }}" {% if categoria.idCategoria == tipo_actual.categoria %}selected{% endif %}>{{categoria.categoria}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Por favor, selecciona una categoria.</div>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center">
+                        <button type="button" id="modificar-btn" class="btn btn-dark mb-2">Modificar</button>
+                        <div class="d-flex justify-content-center w-100">
+                            <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
+                            <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <script>
+                    document.getElementById('modificar-btn').addEventListener('click', function() {
+                        document.querySelectorAll('#editar_tipo_form input, #editar_tipo_form select').forEach((element) => {
+                            element.disabled = false;
+                        });
+                        document.getElementById('guardar-btn').style.display = 'block';
+                        document.getElementById('cancelar-btn').style.display = 'block';
+                    });
+
+                    document.getElementById('cancelar-btn').addEventListener('click', function() {
+                        window.location.href = "{{ url_for('ver_tipos') }}";
+                    });
+                </script>
+{% endblock contenido %}

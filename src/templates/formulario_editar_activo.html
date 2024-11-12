@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form id="editar_activo_form" action="{{ url_for('editar_activo', idActivo=activo_actual.idActivo) }}" method="post">
+                <div class="form-group col-md-6">
+                    <label for="codigo">Código</label>
+                    <input type="number" class="form-control" id="codigo" name="codigo" value="{{ activo_actual.codigo }}" placeholder="Código" required disabled>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="categoria">Categoría Activo</label>
+                        <select id="categoria" name="categoria" class="form-control" required disabled>
+                            <option value="" disabled {% if activo_actual.categoria is none %}selected{% endif %}>Seleccione...</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.idCategoria }}" 
+                                    {% if activo_actual.categoria == categoria.idCategoria %}selected{% endif %}>
+                                {{ categoria.categoria }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="tipo">Tipo Activo</label>
+                        <select id="tipo" name="tipo" class="form-control" required disabled>
+                            <option value="" disabled {% if activo_actual.tipo is none %}selected{% endif %}>Seleccione...</option>
+                            {% for tipo in tipos %}
+                            <option value="{{tipo.idTipo}}"
+                                    {% if activo_actual.tipo == tipo.idTipo %}selected{% endif %}>
+                                {{ tipo.tipo }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="division">División</label>
+                        <select id="division" name="division" class="form-control" required disabled>
+                            <option value="" disabled {% if activo_actual.division is none %}selected{% endif %}>Seleccione...</option>
+                            {% for division in divisiones %}
+                            <option value="{{division.idDivision}}"
+                                    {% if activo_actual.division == division.idDivision %}selected{% endif %}>
+                                {{ division.division }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="caracteristicas">Características</label>
+                    <input type="text" class="form-control text-uppercase" id="caracteristicas" name="caracteristicas" value="{{ activo_actual.caracteristicas }}" placeholder="Características" required disabled>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="marca">Marca</label>
+                        <select id="marca" name="marca" class="form-control" required disabled>
+                            <option value="" disabled {% if activo_actual.marca is none %}selected{% endif %}>Seleccione...</option>
+                            {% for marca in marcas %}
+                            <option value="{{marca.idMarca}}"
+                                    {% if activo_actual.marca == marca.idMarca %}selected{% endif %}>
+                                {{ marca.marca }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="modelo">Modelo</label>
+                        <select id="modelo" name="modelo" class="form-control" required disabled>
+                            <option value="" disabled {% if activo_actual.modelo is none %}selected{% endif %}>Seleccione...</option>
+                            {% for modelo in modelos %}
+                            <option value="{{modelo.idModelo}}"
+                                    {% if activo_actual.modelo == modelo.idModelo %}selected{% endif %}>
+                                {{ modelo.modelo }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="serial">Serial</label>
+                        <input type="text" class="form-control" id="serial" name="serial" value="{{ activo_actual.serial if activo_actual.serial is not none else ' ' }}" placeholder="Serial" required disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="largo">Largo</label>
+                        <input type="text" class="form-control" id="largo" name="largo" value="{{ activo_actual.largo if activo_actual.largo is not none else ' ' }}" placeholder="Largo" required disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="ancho">Ancho</label>
+                        <input type="text" class="form-control" id="ancho" name="ancho" value="{{ activo_actual.ancho if activo_actual.ancho is not none else ' ' }}" placeholder="Ancho" required disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="alto">Alto</label>
+                        <input type="text" class="form-control" id="alto" name="alto" value="{{ activo_actual.alto if activo_actual.alto is not none else ' ' }}" placeholder="Alto" required disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="diametro">Diametro</label>
+                        <input type="text" class="form-control" id="diametro" name="diametro" value="{{ activo_actual.diametro if activo_actual.diametro is not none else ' ' }}" placeholder="Diametro" required disabled>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-dark mb-2" id="editButton">Modificar</button>
+                    <div class="d-flex justify-content-center mt-2">
+                        <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
+                        <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
+
+<script>
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.querySelectorAll('#editar_activo_form input, #editar_activo_form select').forEach((element) => {
+            element.disabled = false;
+        });
+        document.getElementById('guardar-btn').style.display = 'inline-block';
+        document.getElementById('cancelar-btn').style.display = 'inline-block';
+    });
+
+    document.getElementById('cancelar-btn').addEventListener('click', function() {
+        window.location.href = "{{ url_for('ver_activos') }}";
+    });
+</script>
+{% endblock contenido %}

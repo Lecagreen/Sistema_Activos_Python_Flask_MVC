@@ -21,8 +21,18 @@ class Tipos(Base):
         tipos = session.query(Tipos, Categorias).join(Categorias, Tipos.categoria == Categorias.idCategoria ).all()
         print(Tipos)
         return tipos
+    
+    @staticmethod
+    def obtener_tipo_por_id(idTipo):
+        return session.query(Tipos).filter(Tipos.idTipo == idTipo).first()
         
     def agregar_tipo(tipo):
         tipo = session.add(tipo)
+        session.commit()
+        return tipo
+    
+    @staticmethod
+    def editar_tipo(tipo):
+        session.merge(tipo)
         session.commit()
         return tipo
