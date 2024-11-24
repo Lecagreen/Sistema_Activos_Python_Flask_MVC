@@ -12,7 +12,7 @@ class Empleados(Base, SerializerMixin):
     apellidos = Column(String(50), nullable=True)
     correoElectronico = Column(String(40), unique=True, nullable=True)
 
-    def __init__(self, usuarioAdv,division, nombres, apellidos, correoElectronico):
+    def __init__(self, usuarioAdv,division, nombres, apellidos, correoElectronico ):
         self.usuarioAdv = usuarioAdv
         self.division = division
         self.nombres = nombres

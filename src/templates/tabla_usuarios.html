@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+    </div>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Contraseña</th>
+            <th scope="col">Rol</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+          <tr>  
+            <th scope="row">{{usuario.idUsuario}}</th>
+            <td>{{usuario.usuario}}</td>
+            <td>{{usuario.contrasena}}</td>
+            <td>{{usuario.rol}}</td>
+            <td>
+              <a class="btn btn-danger" href="eliminar_usuario/{{usuario.idUsuario}}">Eliminar</a>
+              <a class="btn btn-success" href="editar_usuario/{{usuario.idUsuario}}">Editar</a>
+            </td>          
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </body>
+  </html>
+
+{% endblock contenido %}

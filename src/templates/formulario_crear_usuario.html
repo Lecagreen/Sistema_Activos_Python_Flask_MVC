@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    </div>
+    </nav>
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="León">
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="crear_usuario" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario" pattern="[A-Z0-9\s]+" required>
+                            <div class="invalid-feedback">Por favor, ingresa un usuario</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="contrasena">Contraseña</label>
+                            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+                            <div class="invalid-feedback">Por favor, ingresa tu contraseña.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rol">Rol</label>
+                        <select id="rol" name="rol" class="form-control" required>
+                            <option value="" disabled selected>Seleccione un rol</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Controlador">Controlador</option>
+                        </select>
+                        <div class="invalid-feedback">Por favor, selecciona un rol.</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="RS">
+{% endblock contenido %}

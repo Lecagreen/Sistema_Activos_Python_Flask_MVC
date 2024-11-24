@@ -6,16 +6,16 @@ from src.models.usuarios import Usuarios
 class UsuariosController(FlaskController):
     @app.route("/usuarios")
     def usuarios():
-        usuarios = Usuarios.obtener_todos()
-        return render_template('usuarios.html', titulo="Lista de Usuarios", usuarios=usuarios)    
+        usuarios = Usuarios.obtener_usuarios()
+        return render_template('tabla_usuarios.html', titulo="Lista de Usuarios", usuarios=usuarios)    
     
     @app.route("/usuarios/<idUsuario>")
     def usuario_por_idUsuario(idUsuario):
         usuario = Usuarios.obtener_por_idUsuario(idUsuario)        
         return usuario
 
-    @app.route("/agregar_usuario", methods=['GET','POST'])
-    def agregar_usuario():
+    @app.route("/crear_usuario", methods=['GET','POST'])
+    def crear_usuario():
         if request.method == 'POST':
             usuario = request.form.get('usuario')
             contrasena = request.form.get('contrasena')
@@ -32,4 +32,4 @@ class UsuariosController(FlaskController):
                 usuario,contrasena,rol)
                 Usuarios.agregar(usuario)
                 return redirect(url_for('usuarios'))    
-        return render_template('formulario_usuario.html', titulo="Formulario de Usuario")
+        return render_template('formulario_crear_usuario.html', titulo="Formulario de Usuario")

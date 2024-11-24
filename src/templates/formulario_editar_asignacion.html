@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <form id="editar_asignacion_form" action="{{ url_for('editar_asignacion', idAsignacion=asignacion_actual.idAsignacion) }}" method="post">
+                <div class="form-group col-md-4">
+                    <label for="fecha">Fecha</label>
+                    <input type="text" class="form-control" id="fecha" name="fecha" value="{{asignacion_actual.fecha.strftime('%Y-%m-%d')}}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="idEmpleado">Usuario Advertmind</label>
+                    <select id="idEmpleado" name="idEmpleado" class="form-control" readonly="">
+                        <option selected value="">Seleccione...</option>
+                        {% for empleado in empleados %}
+                            <option value="{{ empleado.idEmpleado }}" {% if empleado.idEmpleado == asignacion_actual.empleado %}selected{% endif %}>{{ empleado.usuarioAdv }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="division">División</label>
+                    <input type="text" class="form-control" id="divisionEmpleado" name="divisionEmpleado" value="{{ division.division }}" readonly>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" name="nombres" value="{{ empleado_info.nombres }}" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" value="{{ empleado_info.apellidos }}" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="correoElectronico">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" value="{{ empleado_info.correoElectronico }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="idActivo">Codigo Activo</label>
+                    <select id="idActivo" name="idActivo" class="form-control" required disabled>
+                        <option selected value="">Seleccione...</option>
+                        {% for activo in activos %}
+                            <option value="{{ activo.idActivo }}" {% if activo.idActivo == asignacion_actual.activo %}selected{% endif %}>{{ activo.codigo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="categoria">Categoría Activo</label>
+                        <input type="text" class="form-control" id="categoria" name="categoria" value="{{ categoria.categoria }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="tipo">Tipo Activo</label>
+                        <input type="text" class="form-control" id="tipo" name="tipo" value="{{ tipo.tipo }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="caracteristicas">Características</label>
+                        <input type="text" class="form-control text-uppercase" id="caracteristicas" name="caracteristicas" value="{{ activo_info.caracteristicas }}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="division">División</label>
+                        <input type="text" class="form-control" id="divisionActivo" name="divisionActivo" value="{{ division.division }}" readonly>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-dark mb-2" id="editButton">Modificar</button>
+                    <div class="d-flex justify-content-center mt-2">
+                        <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
+                        <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
+
+<script>
+    $('#idActivo').change(function() {
+        var idActivo = $(this).val();
+        if (idActivo !== "") {
+            $.ajax({
+                type: "GET",
+                url: "/activos/" + idActivo,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.error) {
+                        console.error(result.error);
+                        return;
+                    }
+                    $('#categoria').val(result.categoriaActivo);
+                    $('#tipo').val(result.tipoActivo);
+                    $('#caracteristicas').val(result.caracteristicas);
+                    $('#divisionActivo').val(result.divisionActivo);
+                },
+                error: function (err) {
+                    console.error("Error al obtener los datos: ", err);
+                }
+            });
+        } else {
+            $('#categoria').val('');
+            $('#tipo').val('');
+            $('#caracteristicas').val('');
+            $('#divisionActivo').val('');
+        }
+    });
+
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.querySelectorAll('#editar_asignacion_form input, #editar_asignacion_form select').forEach((element) => {
+            element.disabled = false;
+        });
+        document.getElementById('guardar-btn').style.display = 'inline-block';
+        document.getElementById('cancelar-btn').style.display = 'inline-block';
+    });
+
+    document.getElementById('cancelar-btn').addEventListener('click', function() {
+        window.location.href = "{{ url_for('asignaciones') }}";
+    });
+</script>
+
+{% endblock contenido %}
