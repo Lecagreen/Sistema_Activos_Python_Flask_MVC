@@ -2,12 +2,17 @@
 {% block contenido %}
 
     </div>
+      <a href="/crear_categoria" class="btn btn-primary mt-3 mb-4">
+        <i class="fa-solid fa-file-circle-plus"></i> Crear Categoría
+      </a>
       </nav>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Division</th>
+            <th scope="col">Vigente</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -15,9 +20,14 @@
             <tr>  
               <th scope="row">{{division.idDivision}}</th>
               <td>{{division.division}}</td>
+              <td>{{division.estado}}</td>
               <td>
-                <a class="btn btn-danger" href="eliminar_division/{{division.idDivision}}">Eliminar</a>
-                <a class="btn btn-success" href="editar_division/{{division.idDivision}}">Editar</a>
+                <a class="btn btn-success" href="editar_division/{{division.idDivision}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-danger" href="eliminar_division/{{division.idDivision}}">
+                  <i class="fas fa-trash-alt"></i> 
+                </a>
               </td>
             </tr>
           {% endfor %}

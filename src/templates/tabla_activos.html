@@ -38,8 +38,12 @@
                     <td>{{ activo.Activos.alto }}</td>
                     <td>{{ activo.Activos.diametro }}</td>
                     <td>
-                        <a class="btn btn-danger" href="eliminar_activo/{{ activo.Activos.idActivo }}">Eliminar</a>
-                        <a class="btn btn-success" href="editar_activo/{{ activo.Activos.idActivo }}">Editar</a>
+                        <a class="btn btn-success" href="editar_activo/{{ activo.Activos.idActivo }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger" href="eliminar_activo/{{ activo.Activos.idActivo }}">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

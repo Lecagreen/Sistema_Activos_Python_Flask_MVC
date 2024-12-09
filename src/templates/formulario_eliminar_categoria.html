@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form action="{{ url_for('eliminar_categoria', idCategoria=categoria_actual.idCategoria) }}" method="post">
+                    <div class="form-group col-md-6" style="margin-bottom: 20px;">
+                        <label for="categoria">Categoría</label>
+                        <input type="text" class="form-control" id="nueva_categoria" name="categoria" value="{{ categoria_actual.categoria }}" readonly>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger mx-2">Eliminar (Categoría No Vigente)</button>
+                        <button type="button" id="cancelar-btn" class="btn btn-secondary mx-2">Cancelar</button>
+                    </div>
+                </form>
+
+                <script>
+                    document.getElementById('cancelar-btn').addEventListener('click', function() {
+                        window.location.href = "{{ url_for('ver_categorias') }}";
+                    });
+                </script>
+            </div>
+        </div>
+
+{% endblock contenido %}

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Enum
 from src.models import session, Base
 
 class Ubicaciones(Base):
@@ -7,11 +7,13 @@ class Ubicaciones(Base):
     ubicacion = Column(String(20), nullable=True)
     piso = Column(String(20))
     puesto = Column(String(20))
+    estado = Column(Enum('SI', 'NO', name='estado_enum'), default='SI', nullable=False) 
 
-    def __init__(self, ubicacion, piso, puesto):
+    def __init__(self, ubicacion, piso, puesto, estado='SI'):
         self.ubicacion = ubicacion
         self.piso = piso
         self.puesto = puesto
+        self.estado = estado
 
     def obtener_ubicaciones():
         ubicaciones = session.query(Ubicaciones).all()
@@ -30,4 +32,12 @@ class Ubicaciones(Base):
     def editar_ubicacion(ubicacion):
         session.merge(ubicacion)
         session.commit()
+        return ubicacion
+    
+    @staticmethod
+    def eliminar_ubicacion(idUbicacion):
+        ubicacion = session.query(Ubicaciones).filter(Ubicaciones.idUbicacion == idUbicacion).first()
+        if ubicacion:
+            ubicacion.estado = 'NO'
+            session.commit()
         return ubicacion

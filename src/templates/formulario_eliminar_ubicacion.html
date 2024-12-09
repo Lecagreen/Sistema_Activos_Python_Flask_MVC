@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+    <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="eliminar_ubicacion_form" action="{{ url_for('eliminar_ubicacion', idUbicacion=ubicacion_actual.idUbicacion) }}" method="post">
+                    <div class="form-group col-md-6" style="margin-bottom: 30px;">
+                        <label for="ubicacion">Ubicación</label>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ ubicacion_actual.ubicacion }}" readonly>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="piso">Piso</label>
+                            <input type="text" class="form-control" id="piso" name="piso" value="{{ ubicacion_actual.piso }}" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="puesto">Puesto</label>
+                            <input type="text" class="form-control" id="puesto" name="puesto" value="{{ ubicacion_actual.puesto }}" readonly>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-danger mx-2">Eliminar Ubicacion No Vigente</button>
+                            <button type="button" id="cancelar-btn" class="btn btn-secondary mx-2">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
+
+    <script>
+    
+        document.getElementById('cancelar-btn').addEventListener('click', function() {
+            window.location.href = "{{ url_for('ver_ubicaciones') }}";
+        });
+    </script>
+{% endblock contenido %}

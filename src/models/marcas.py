@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Enum, create_engine
 from src.models import session, Base
 
 class Marcas(Base):
@@ -6,9 +6,11 @@ class Marcas(Base):
 
     idMarca = Column(Integer, primary_key=True)
     marca = Column(String(20),unique=True, nullable=True)
+    estado = Column(Enum('SI', 'NO', name='estado_enum'), default='SI', nullable=False)
 
-    def __init__(self, marca):
+    def __init__(self, marca, estado='SI'):
         self.marca = marca
+        self.estado = estado
 
     def obtener_marcas():
         marcas = session.query(Marcas).all()
@@ -27,4 +29,12 @@ class Marcas(Base):
     def editar_marca(marca):
         session.merge(marca)
         session.commit()
+        return marca
+
+    @staticmethod
+    def eliminar_marca(idMarca):
+        marca = session.query(Marcas).filter(Marcas.idMarca == idMarca).first()
+        if marca:
+            marca.estado = 'NO'
+            session.commit()
         return marca

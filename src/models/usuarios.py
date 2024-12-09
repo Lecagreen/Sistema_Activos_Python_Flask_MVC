@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Enum
 from src.models import session, Base
 from flask_login import UserMixin
 
@@ -8,12 +8,13 @@ class Usuarios(Base, UserMixin):
     usuario = Column(String(20), unique=True, nullable=False)    
     contrasena = Column(String(20), nullable=False)    
     rol = Column(String(50), nullable=False)
+    estado = Column(Enum('SI', 'NO', name='estado_enum'), default='SI', nullable=False)
     
-    
-    def __init__(self,usuario,contrasena,rol):
-        self.usuario=usuario
-        self.contrasena=contrasena
-        self.rol=rol
+    def __init__(self,usuario,contrasena,rol, estado = 'SI'):
+        self.usuario = usuario
+        self.contrasena = contrasena
+        self.rol =rol
+        self.estado = estado
 
     def get_id(self):
         return str(self.idUsuario)
@@ -37,3 +38,10 @@ class Usuarios(Base, UserMixin):
             if usuario_valido.contrasena == contrasena:
                 return usuario_valido
         return False
+    
+    def eliminar_usuario(idUsuario):
+        usuario = session.query(Usuarios).filter(Usuarios.idUsuario == idUsuario).first()
+        if usuario:
+            usuario.estado = 'NO'
+            session.commit()
+        return usuario

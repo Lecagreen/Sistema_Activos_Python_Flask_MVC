@@ -10,6 +10,8 @@
             <th scope="col">Usuario</th>
             <th scope="col">Contraseña</th>
             <th scope="col">Rol</th>
+            <th scope="col">Vigente</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -19,6 +21,7 @@
             <td>{{usuario.usuario}}</td>
             <td>{{usuario.contrasena}}</td>
             <td>{{usuario.rol}}</td>
+            <td>{{usuario.estado}}</td>           
             <td>
               <a class="btn btn-danger" href="eliminar_usuario/{{usuario.idUsuario}}">Eliminar</a>
               <a class="btn btn-success" href="editar_usuario/{{usuario.idUsuario}}">Editar</a>

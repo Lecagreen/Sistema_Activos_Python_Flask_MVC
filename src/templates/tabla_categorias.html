@@ -1,29 +1,39 @@
 {% extends 'layout.html' %}
+
 {% block contenido %}
 
-    </div>
-      </nav>
+<div>
+    <a href="/crear_categoria" class="btn btn-primary mt-3 mb-4">
+      <i class="fa-solid fa-file-circle-plus"></i> Crear Categoría
+    </a>
+    <nav>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Categoría</th>
+            <th scope="col">Vigente</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {% for categoria in categorias %}
-            <tr>  
-              <th scope="row">{{categoria.idCategoria}}</th>
-              <td>{{categoria.categoria}}</td>
+            <tr>
+              <th scope="row">{{ categoria.idCategoria }}</th>
+              <td>{{ categoria.categoria }}</td>
+              <td>{{ categoria.estado }}</td>
               <td>
-                <a class="btn btn-danger" href="eliminar_categoria/{{categoria.idCategoria}}">Eliminar</a>
-                <a class="btn btn-success" href="editar_categoria/{{categoria.idCategoria}}">Editar</a>
+                <a class="btn btn-success" href="editar_categoria/{{categoria.idCategoria}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-danger" href="eliminar_categoria/{{categoria.idCategoria}}">
+                  <i class="fas fa-trash-alt"></i> 
+                </a>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-  </body>
-  </html>
-
+    </nav>
+  </div>
 {% endblock contenido %}

@@ -33,3 +33,22 @@ class MarcasController(FlaskController):
     def ver_marcas():
         marcas = Marcas.obtener_marcas()
         return render_template('tabla_marcas.html', titulo_pagina = 'Ver Marcas', marcas=marcas)
+    
+    @app.route('/eliminar_marca/<int:idMarca>', methods=['POST', 'GET'])
+    def eliminar_marca(idMarca):
+        marca_actual = Marcas.obtener_marca_por_id(idMarca)
+        if request.method == 'POST':
+            cambio_estado = request.form.get('marca')
+            try:
+                marca_actual.marca = cambio_estado
+                marca = Marcas.eliminar_marca(idMarca)
+                if marca:
+                    flash("¡Marca No Vigente!")
+                else:
+                    flash("Error: Marca no encontrada.")
+            except Exception as e:
+                flash(f"Error al intentar marcar la marca como No Vigente: {str(e)}")
+            return redirect(url_for('ver_marcas'))
+        marcas = Marcas.obtener_marcas()
+        return render_template('formulario_eliminar_marca.html', titulo_pagina='Eliminar Marca',
+                                marca_actual=marca_actual, marcas=marcas)

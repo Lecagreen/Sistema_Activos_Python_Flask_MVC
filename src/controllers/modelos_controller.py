@@ -34,13 +34,31 @@ class ModelosController(FlaskController):
                 flash("¡Modelo modfificado exitosamente!")
                 return redirect(url_for('ver_modelos'))
             except Exception as e:
-                flash(f"Erros al modificar el modelo: {str(e)}")
+                flash(f"Error al modificar el modelo: {str(e)}")
                 return redirect(url_for('editar_modelo', idModelo=idModelo))
         modelos = Modelos.obtener_modelos()     
         return render_template('formulario_editar_modelo.html', titulo_pagina = 'Ver Modelos', 
-                               modelo_actual=modelo_actual, marcas=marcas)
+                               modelo_actual=modelo_actual, marcas=marcas, modelos=modelos)
 
     @app.route('/ver_modelos')
     def ver_modelos():
         modelos = Modelos.obtener_modelos()
         return render_template('tabla_modelos.html', titulo_pagina = 'Ver Modelos', modelos=modelos)
+    
+    @app.route('/eliminar_modelo/<int:idModelo>', methods=['POST', 'GET'])
+    def eliminar_modelo(idModelo):
+        modelo_actual = Modelos.obtener_modelo_por_id(idModelo)
+        if not modelo_actual:
+            flash("Modelo no encontrado")
+            return redirect(url_for('ver_modelos'))
+        if request.method == 'POST':
+            try:
+                modelo_actual.estado = 'NO'
+                Modelos.editar_modelo(modelo_actual)  
+                flash("¡Modelo marcado como no vigente!")
+            except Exception as e:
+                flash(f"Error al eliminar el modelo: {str(e)}")
+            return redirect(url_for('ver_modelos'))
+        marcas = Marcas.obtener_marcas()
+        return render_template('formulario_eliminar_modelo.html', titulo_pagina='Eliminar Modelo', 
+                               modelo_actual=modelo_actual, marcas=marcas)

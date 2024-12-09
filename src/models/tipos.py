@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum
 from src.models import session, Base
 from src.models.categorias import Categorias 
 
@@ -7,10 +7,12 @@ class Tipos(Base):
     idTipo = Column(Integer, primary_key=True)
     tipo = Column(String(20), nullable=True)
     categoria = Column(Integer, ForeignKey('categorias.idCategoria'), nullable=False)
+    estado = Column(Enum('SI', 'NO', name='estado_enum'), default='SI', nullable=False)
 
-    def __init__(self, tipo, categoria):
+    def __init__(self, tipo, categoria, estado='SI'):
         self.tipo = tipo
         self.categoria = categoria
+        self.estado = estado
 
     def obtener_tipos_activo():
         tipos = session.query(Tipos).all()
@@ -35,4 +37,12 @@ class Tipos(Base):
     def editar_tipo(tipo):
         session.merge(tipo)
         session.commit()
+        return tipo
+    
+    @staticmethod
+    def eliminar_tipo(idTipo):
+        tipo = session.query(Tipos).filter(Tipos.idTipo == idTipo).first()
+        if tipo:
+            tipo.estado = 'NO'
+            session.commit()
         return tipo

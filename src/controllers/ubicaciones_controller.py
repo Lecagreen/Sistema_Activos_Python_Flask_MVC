@@ -43,3 +43,21 @@ class UbicacionesController(FlaskController):
     def ver_ubicaciones():
         ubicaciones = Ubicaciones.obtener_ubicaciones()
         return render_template('tabla_ubicaciones.html', titulo_pagina = 'Ver Ubicaciones', ubicaciones=ubicaciones)
+    
+    @app.route('/eliminar_ubicacion/<int:idUbicacion>', methods=['POST', 'GET'])
+    def eliminar_ubicacion(idUbicacion):
+        ubicacion_actual = Ubicaciones.obtener_ubicacion_por_id(idUbicacion)
+        if not ubicacion_actual:
+            flash("Ubicacion no encontrado")
+            return redirect(url_for('ver_ubicaciones'))
+        if request.method == 'POST':
+            try:
+                ubicacion_actual.estado = 'NO'
+                Ubicaciones.editar_ubicacion(ubicacion_actual)  
+                flash("¡Ubicaciones marcado como no vigente!")
+            except Exception as e:
+                flash(f"Error al eliminar el ubicacion: {str(e)}")
+            return redirect(url_for('ver_ubicaciones'))
+        ubicaciones = Ubicaciones.obtener_ubicaciones()
+        return render_template('formulario_eliminar_ubicacion.html', titulo_pagina='Eliminar Ubicacion', 
+                               ubicacion_actual=ubicacion_actual, ubicaciones=ubicaciones)

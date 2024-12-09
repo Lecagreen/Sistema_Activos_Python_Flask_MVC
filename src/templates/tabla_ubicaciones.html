@@ -2,6 +2,9 @@
 {% block contenido %}
 
     </div>
+      <a href="/crear_categoria" class="btn btn-primary mt-3 mb-4">
+        <i class="fa-solid fa-file-circle-plus"></i> Crear Categoría
+      </a>
       </nav>
       <table class="table">
         <thead>
@@ -10,6 +13,8 @@
             <th scope="col">Ubicación</th>
             <th scope="col">Piso</th>
             <th scope="col">Puesto</th>
+            <th scope="col">Vigente</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -19,9 +24,14 @@
               <td>{{ubicacion.ubicacion}}</td>
               <td>{{ubicacion.piso}}</td>
               <td>{{ubicacion.puesto}}</td>
+              <td>{{ubicacion.estado}}</td>
               <td>
-                <a class="btn btn-danger" href="eliminar_ubicacion/{{ubicacion.idUbicacion}}">Eliminar</a>
-                <a class="btn btn-success" href="editar_ubicacion/{{ubicacion.idUbicacion}}">Editar</a>
+                <a class="btn btn-success" href="editar_ubicacion/{{ubicacion.idUbicacion}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-danger" href="eliminar_ubicacion/{{ubicacion.idUbicacion}}">
+                  <i class="fas fa-trash-alt"></i> 
+                </a>
               </td> 
             </tr>
           {% endfor %}

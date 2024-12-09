@@ -39,3 +39,23 @@ class CategoriasController(FlaskController):
     def ver_categorias():
         categorias = Categorias.obtener_categorias()
         return render_template('tabla_categorias.html', titulo_pagina = 'Ver Categorias', categorias=categorias)
+    
+    @app.route('/eliminar_categoria/<int:idCategoria>', methods=['POST', 'GET'])
+    def eliminar_categoria(idCategoria):
+        categoria_actual = Categorias.obtener_categoria_por_id(idCategoria)
+
+        if request.method == 'POST':
+            cambio_estado = request.form.get('categoria')
+            try:
+                categoria_actual.categoria = cambio_estado
+                categoria = Categorias.eliminar_categoria(idCategoria)
+                if categoria:
+                    flash("¡Categoría No Vigente!")
+                else:
+                    flash("Error: Marca no encontrada.")
+            except Exception as e:
+                flash(f"Error al intentar marcar la categoria como No Vigente: {str(e)}")
+            return redirect(url_for('ver_categorias'))
+        categorias = Categorias.obtener_categorias()
+        return render_template('formulario_eliminar_categoria.html', titulo_pagina='Eliminar Categoria', 
+                               categoria_actual=categoria_actual, categorias=categorias)

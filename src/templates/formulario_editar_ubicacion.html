@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form id="editar_ubicacion_form" action="{{ url_for('crear_ubicacion', idUbicacion=ubicacion_actual.idUbicacion) }}" method="post">
+                <form id="editar_ubicacion_form" action="{{ url_for('editar_ubicacion', idUbicacion=ubicacion_actual.idUbicacion) }}" method="post">
                     <div class="form-group col-md-6" style="margin-bottom: 30px;">
                         <label for="ubicacion">Ubicación</label>
                         <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ ubicacion_actual.ubicacion }}" pattern="[A-Z\s]+" title="Solo se permiten letras mayúsculas y espacios" disabled required>

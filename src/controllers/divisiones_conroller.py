@@ -33,3 +33,21 @@ class DivisionesController(FlaskController):
     def ver_divisiones():
         divisiones = Divisiones.obtener_divisiones()
         return render_template('tabla_divisiones.html', titulo_pagina = 'Ver Divisiones', divisiones=divisiones)
+    
+    @app.route('/eliminar_division/<int:idDivision>', methods=['POST', 'GET'])
+    def eliminar_division(idDivision):
+        division_actual = Divisiones.obtener_division_por_id(idDivision)
+        if not division_actual:
+            flash("Division no encontrado")
+            return redirect(url_for('ver_divisiones'))
+        if request.method == 'POST':
+            try:
+                division_actual.estado = 'NO'
+                Divisiones.editar_division(division_actual)  
+                flash("¡Division marcado como no vigente!")
+            except Exception as e:
+                flash(f"Error al eliminar el division: {str(e)}")
+            return redirect(url_for('ver_divisiones'))
+        divisiones = Divisiones.obtener_divisiones()
+        return render_template('formulario_eliminar_division.html', titulo_pagina='Eliminar Division', 
+                               division_actual=division_actual, divisiones=divisiones)

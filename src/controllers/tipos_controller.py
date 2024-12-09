@@ -44,3 +44,24 @@ class TiposController(FlaskController):
     def ver_tipos():
         tipos = Tipos.obtener_tipos()
         return render_template('tabla_tipos.html', titulo_pagina = 'Ver Tipos', tipos=tipos)
+    
+    @app.route('/eliminar_tipo/<int:idTipo>', methods=['POST', 'GET'])
+    def eliminar_tipo(idTipo):
+        tipo_actual = Tipos.obtener_tipo_por_id(idTipo)
+        if not tipo_actual:
+            flash("Tipo no encontrado")
+            return redirect(url_for('ver_tipos'))
+
+        if request.method == 'POST':
+            try:
+                tipo_actual.estado = 'NO'
+                Tipos.editar_tipo(tipo_actual)  
+
+                flash("¡Tipo marcado como no vigente!")
+            except Exception as e:
+                flash(f"Error al eliminar el tipo: {str(e)}")
+            return redirect(url_for('ver_tipos'))
+
+        categorias = Categorias.obtener_categorias()
+        return render_template('formulario_eliminar_tipo.html', titulo_pagina='Eliminar Tipo', 
+                               tipo_actual=tipo_actual, categorias=categorias)

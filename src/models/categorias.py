@@ -1,13 +1,16 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Enum, create_engine
 from src.models import session, Base
 
 class Categorias(Base):
     __tablename__ = 'categorias'
+
     idCategoria = Column(Integer, primary_key=True)
     categoria = Column(String(30), unique=True, nullable=False)
+    estado = Column(Enum('SI', 'NO', name='estado_enum'), default='SI', nullable=False)
     
-    def __init__(self, categoria):
+    def __init__(self, categoria, estado='SI'):
         self.categoria = categoria
+        self.estado = estado
 
     @staticmethod
     def obtener_categorias():
@@ -28,4 +31,12 @@ class Categorias(Base):
     def editar_categoria(categoria):
         session.merge(categoria)
         session.commit()
+        return categoria
+    
+    @staticmethod
+    def eliminar_categoria(idCategoria):
+        categoria = session.query(Categorias).filter(Categorias.idCategoria == idCategoria).first()
+        if categoria:
+            categoria.estado = 'NO'
+            session.commit()
         return categoria

@@ -2,12 +2,18 @@
 {% block contenido %}
 
     </div>
+
+      <a href="/crear_marca" class="btn btn-primary mt-3 mb-4">
+        <i class="fa-solid fa-file-circle-plus"></i> Crear Marca
+      </a>
       </nav>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Marca</th>
+            <th scope="col">Vigente</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -15,9 +21,14 @@
             <tr>  
               <th scope="row">{{marca.idMarca}}</th>
               <td>{{marca.marca}}</td>
+              <td>{{marca.estado}}</td>
               <td>
-                <a class="btn btn-danger" href="eliminar_marca/{{marca.idMarca}}">Eliminar</a>
-                <a class="btn btn-success" href="editar_marca/{{marca.idMarca}}">Editar</a>
+                <a class="btn btn-success" href="editar_marca/{{marca.idMarca}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-danger" href="eliminar_marca/{{marca.idMarca}}">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
               </td>              
             </tr>
           {% endfor %}
