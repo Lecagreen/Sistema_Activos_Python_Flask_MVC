@@ -4,8 +4,8 @@ from flask_controller import FlaskController
 from src.models.usuarios import Usuarios
 
 class UsuariosController(FlaskController):
-    @app.route("/usuarios")
-    def usuarios():
+    @app.route("/ver_usuarios")
+    def ver_usuarios():
         usuarios = Usuarios.obtener_usuarios()
         return render_template('tabla_usuarios.html', titulo="Lista de Usuarios", usuarios=usuarios)    
     
@@ -31,5 +31,5 @@ class UsuariosController(FlaskController):
                 usuario = Usuarios(
                 usuario,contrasena,rol)
                 Usuarios.agregar(usuario)
-                return redirect(url_for('usuarios'))    
+                return redirect(url_for('ver_usuarios'))    
         return render_template('formulario_crear_usuario.html', titulo="Formulario de Usuario")

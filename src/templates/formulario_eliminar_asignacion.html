@@ -1,11 +1,10 @@
 {% extends 'layout.html' %}
 {% block contenido %}
 <img src="{{ url_for('static', filename='images/Leon.pg') }}" class="rounded mx-auto d-block" alt="...">
-
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <form id="editar_asignacion_form" action="{{ url_for('editar_asignacion', idAsignacion=asignacion_actual.idAsignacion) }}" method="post">
+            <form id="eliminar_asignacion_form" action="{{ url_for('eliminar_asignacion', idAsignacion=asignacion_actual.idAsignacion) }}" method="post">
                 <div class="form-group col-md-4">
                     <label for="fecha">Fecha</label>
                     <input type="text" class="form-control" id="fecha" name="fecha" value="{{asignacion_actual.fecha.strftime('%Y-%m-%d')}}" readonly>
@@ -64,11 +63,10 @@
                         <input type="text" class="form-control" id="divisionActivo" name="divisionActivo" value="{{ division.division }}" readonly>
                     </div>
                 </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-dark mb-2" id="editButton">Modificar</button>
-                    <div class="d-flex justify-content-center mt-2">
-                        <button type="submit" id="guardar-btn" class="btn btn-success mx-2" style="display: none;">Guardar</button>
-                        <button type="button" id="cancelar-btn" class="btn btn-danger mx-2" style="display: none;">Cancelar</button>
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger mx-2">Eliminar Asignacion - Devolución</button>
+                        <button type="button" id="cancelar-btn" class="btn btn-secondary mx-2">Cancelar</button>
                     </div>
                 </div>
             </form>
@@ -79,44 +77,7 @@
 <img src="{{ url_for('static', filename='images/rs.pg') }}" class="img-responsive mx-auto d-block align-middle" alt="...">
 
 <script>
-    $('#idActivo').change(function() {
-        var idActivo = $(this).val();
-        if (idActivo !== "") {
-            $.ajax({
-                type: "GET",
-                url: "/activos/" + idActivo,
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (result) {
-                    if (result.error) {
-                        console.error(result.error);
-                        return;
-                    }
-                    $('#categoria').val(result.categoriaActivo);
-                    $('#tipo').val(result.tipoActivo);
-                    $('#caracteristicas').val(result.caracteristicas);
-                    $('#divisionActivo').val(result.divisionActivo);
-                },
-                error: function (err) {
-                    console.error("Error al obtener los datos: ", err);
-                }
-            });
-        } else {
-            $('#categoria').val('');
-            $('#tipo').val('');
-            $('#caracteristicas').val('');
-            $('#divisionActivo').val('');
-        }
-    });
-
-    document.getElementById('editButton').addEventListener('click', function() {
-        document.querySelectorAll('#editar_asignacion_form input, #editar_asignacion_form select').forEach((element) => {
-            element.disabled = false;
-        });
-        document.getElementById('guardar-btn').style.display = 'inline-block';
-        document.getElementById('cancelar-btn').style.display = 'inline-block';
-    });
-
+    
     document.getElementById('cancelar-btn').addEventListener('click', function() {
         window.location.href = "{{ url_for('ver_asignaciones') }}";
     });

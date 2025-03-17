@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Enum, ForeignKey, DateTime
 from src.models import session, Base
 from sqlalchemy_serializer import SerializerMixin
 from src.models.empleados import Empleados
@@ -10,11 +10,13 @@ class Asignaciones(Base, SerializerMixin):
     fecha = Column(DateTime, nullable=False)
     empleado = Column(Integer, ForeignKey('empleados.idEmpleado'), nullable=False)
     activo = Column(Integer, ForeignKey('activos.idActivo'), nullable=False)
+    status = Column(Enum('A', 'D', name='status_enum'), default='A', nullable=False)
 
-    def __init__(self,fecha, empleado, activo):
+    def __init__(self,fecha, empleado, activo, status = 'A'):
         self.fecha=fecha
         self.empleado=empleado
         self.activo=activo
+        self.status=status
         
     def obtener_asignaciones():
         try:
@@ -50,3 +52,19 @@ class Asignaciones(Base, SerializerMixin):
         session.merge(asignacion)
         session.commit()
         return asignacion
+    
+    def eliminar_asignacion(idAsignacion):
+        try:
+            asignacion = session.query(Asignaciones).filter(Asignaciones.idAsignacion == idAsignacion).first()
+            
+            if asignacion is not None:
+                asignacion.status = 'D'
+                session.commit()
+                return True
+            else:
+                print(f"No se encontró la asignación con ID {idAsignacion}")
+                return False
+        except Exception as e:
+            print(f"Error al eliminar la asignación con ID {idAsignacion}: {e}")
+            session.rollback()
+            return False

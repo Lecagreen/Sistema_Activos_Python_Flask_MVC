@@ -11,7 +11,7 @@ import datetime
 
 class AsignacionesController(FlaskController):    
     @app.route("/ver_asignaciones")
-    def asignaciones():
+    def ver_asignaciones():
         asignaciones = Asignaciones.obtener_asignaciones()
         return render_template('tabla_asignaciones.html', titulo="Lista de Asignaciones", asignaciones=asignaciones)
 
@@ -68,3 +68,30 @@ class AsignacionesController(FlaskController):
                                asignacion_actual=asignacion_actual, empleados=empleados, activos=activos, 
                                activo_info=activo_info, empleado_info=empleado_info, categoria=categoria, tipo=tipo, division=division)
 
+    @app.route('/eliminar_asignacion/<int:idAsignacion>', methods=['POST', 'GET'])
+    def eliminar_asignacion(idAsignacion):
+        asignacion_actual, empleado_info, activo_info = Asignaciones.obtener_asignacion_por_id(idAsignacion)
+
+        if not asignacion_actual:
+            flash("Asigacion no encontrada")
+            return redirect(url_for('ver_asignaciones'))
+        
+        empleados = Empleados.obtener_empleados_asignacion()
+        activos = Activos.obtener_activos_asignacion()
+        categoria = Categorias.obtener_categoria_por_id(activo_info.categoria)
+        tipo = Tipos.obtener_tipo_por_id(activo_info.tipo)
+        division = Divisiones.obtener_division_por_id(activo_info.division)
+        
+        if request.method == 'POST':
+            try:
+                asignacion_actual.status = 'D'
+                Asignaciones.editar_asignacion(asignacion_actual)  
+                flash("¡Asinacion marcada como no devuelta!")
+            except Exception as e:
+                flash(f"Error al marcar la asignación como devuelta: {str(e)}")
+            return redirect(url_for('ver_asignaciones'))
+        asignaciones = Asignaciones.obtener_asignaciones()
+        return render_template('formulario_eliminar_asignacion.html', 
+                               titulo_pagina='Eliminar Asignacion', 
+                               asignacion_actual=asignacion_actual, empleados=empleados, activos=activos, 
+                               activo_info=activo_info, empleado_info=empleado_info, categoria=categoria, tipo=tipo, division=division)
