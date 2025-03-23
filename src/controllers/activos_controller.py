@@ -7,8 +7,15 @@ from src.models.modelos import Modelos
 from src.models.categorias import Categorias
 from src.models.divisiones import Divisiones
 from src.models.tipos import Tipos
+from flask_restful import Api
+from src.api.activos_api import ActivosApi
+
 
 class ActivosController(FlaskController):
+
+    api = Api(app)
+
+    api.add_resource(ActivosApi, '/api/activos')
     
     @app.route('/crear_activo', methods=['POST', 'GET'])
     def crear_activo():
@@ -25,8 +32,6 @@ class ActivosController(FlaskController):
             alto = request.form.get('alto') or None
             diametro = request.form.get('diametro') or None
             division = request.form.get('division')
-
-            print(f"codigo: {codigo}, tipo: {tipo}, categoria: {categoria}, caracteristicas: {caracteristicas}, division: {division}")
 
             if not all([codigo, tipo, categoria, caracteristicas, division]):
                 raise ValueError("Los campos obligatorios no pueden contener valores nulos.")
