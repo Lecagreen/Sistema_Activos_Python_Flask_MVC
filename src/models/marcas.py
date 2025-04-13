@@ -12,6 +12,14 @@ class Marcas(Base):
         self.marca = marca
         self.estado = estado
 
+    def to_dict(self):
+
+        return {
+            'idMarca': self.idMarca,
+            'marca': self.marca,
+            'estado' : self.estado
+    }
+
     def obtener_marcas():
         marcas = session.query(Marcas).all()
         return marcas

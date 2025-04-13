@@ -40,7 +40,24 @@ class Activos(Base, SerializerMixin):
 
     def __repr__(self):
         return f"<Activos(idActivo={self.idActivo}, codigo={self.codigo}, caracteristicas='{self.caracteristicas}', serial='{self.serial}')>"
-
+        
+    def to_dict(self):
+        return {
+            'idActivo': self.idActivo,
+            'codigo': self.codigo,
+            'categoria': self.categoria,
+            'tipo': self.tipo,
+            'caracteristicas': self.caracteristicas,
+            'marca': self.marca,
+            'modelo': self.modelo,
+            'serial': self.serial,
+            'largo': self.largo,
+            'ancho': self.ancho,
+            'alto': self.alto,
+            'diametro': self.diametro,
+            'division': self.division
+        }
+    
     @staticmethod
     def obtener_activos():
         try:
@@ -53,6 +70,15 @@ class Activos(Base, SerializerMixin):
             for act in activos:
                 print(act)
             return activos
+        except Exception as e:
+            print(f"Error al obtener activos: {e}")
+            return []
+        
+    def obtener_activos_api():
+        try:
+            activos = session.query(Activos).all()
+            resultado = [activo.to_dict() for activo in activos]
+            return resultado
         except Exception as e:
             print(f"Error al obtener activos: {e}")
             return []

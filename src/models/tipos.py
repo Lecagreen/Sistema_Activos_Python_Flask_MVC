@@ -14,14 +14,21 @@ class Tipos(Base):
         self.categoria = categoria
         self.estado = estado
 
+    def to_dict(self):
+
+        return {
+            'idTipo': self.idTipo,
+            'tipo': self.tipo,
+            'categoria': self.categoria,
+            'estado' : self.estado
+    }
+
     def obtener_tipos_activo():
         tipos = session.query(Tipos).all()
-        print(tipos)
         return tipos
 
     def obtener_tipos():
         tipos = session.query(Tipos, Categorias).join(Categorias, Tipos.categoria == Categorias.idCategoria ).all()
-        print(Tipos)
         return tipos
     
     @staticmethod

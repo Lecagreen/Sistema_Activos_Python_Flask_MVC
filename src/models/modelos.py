@@ -15,6 +15,15 @@ class Modelos(Base):
         self.marca = marca
         self.estado = estado
 
+    def to_dict(self):
+
+        return {
+            'idModelo': self.idModelo,
+            'modelo': self.modelo,
+            'marca': self.marca,
+            'estado' : self.estado
+    }
+
     def obtener_modelos_activo():
         modelos = session.query(Modelos).all()
         print(modelos)

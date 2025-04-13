@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, Enum, create_engine
 from src.models import session, Base
+from sqlalchemy_serializer import SerializerMixin
 
-class Categorias(Base):
+class Categorias(Base, SerializerMixin):
     __tablename__ = 'categorias'
 
     idCategoria = Column(Integer, primary_key=True)
@@ -11,6 +12,14 @@ class Categorias(Base):
     def __init__(self, categoria, estado='SI'):
         self.categoria = categoria
         self.estado = estado
+
+    def to_dict(self):
+
+        return {
+            'idCategoria': self.idCategoria,
+            'categoria': self.categoria,
+            'estado': self.estado
+    }
 
     @staticmethod
     def obtener_categorias():

@@ -11,6 +11,14 @@ class Divisiones(Base):
         self.division = division
         self.estado = estado
 
+    def to_dict(self):
+
+        return {
+            'idDivision': self.idDivision,
+            'division': self.division,
+            'estado' : self.estado
+    }
+
     def obtener_divisiones():
         divisiones = session.query(Divisiones).all()
         return divisiones
